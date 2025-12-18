@@ -4,8 +4,10 @@ import com.example.demo.exception.BadRequestException;
 import com.example.demo.model.ClaimRule;
 import com.example.demo.repository.ClaimRuleRepository;
 import com.example.demo.service.ClaimRuleService;
+import org.springframework.stereotype.Service;
 import java.util.List;
 
+@Sevice
 public class ClaimRuleServiceImpl implements ClaimRuleService {
 
     private final ClaimRuleRepository ruleRepository;

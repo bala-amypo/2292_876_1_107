@@ -6,8 +6,10 @@ import com.example.demo.model.Evidence;
 import com.example.demo.repository.DamageClaimRepository;
 import com.example.demo.repository.EvidenceRepository;
 import com.example.demo.service.EvidenceService;
+import org.springframework.stereotype.Service;
 import java.util.List;
 
+@Sevice
 public class EvidenceServiceImpl implements EvidenceService {
 
     private final EvidenceRepository evidenceRepository;
