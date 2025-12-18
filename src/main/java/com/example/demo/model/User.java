@@ -19,11 +19,14 @@ public class User {
 
     private String password;
 
-    private String role; 
+    private String role; // ADMIN / AGENT
 
-   
+    // Default Constructor
+    public User() {
+        this.role = "AGENT";
+    }
 
-    
+    // Parameterized Constructor
     public User(Long id, String name, String email, String password, String role) {
         this.id = id;
         this.name = name;
@@ -32,7 +35,7 @@ public class User {
         this.role = role;
     }
 
-    
+    // Getters and Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -47,17 +50,4 @@ public class User {
 
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
-
-    public User(Long id, String name, String email, String password, String role) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.role = role;
-    }
-
-     public User() {
-        this.role = "AGENT";
-    }
-
 }
