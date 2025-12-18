@@ -19,14 +19,14 @@ public class User {
 
     private String password;
 
-    private String role; // ADMIN / AGENT
+    private String role; 
 
-    // Default Constructor
+   
     public User() {
         this.role = "AGENT";
     }
 
-    // Parameterized Constructor
+    
     public User(Long id, String name, String email, String password, String role) {
         this.id = id;
         this.name = name;
@@ -35,7 +35,7 @@ public class User {
         this.role = role;
     }
 
-    // Getters and Setters
+    
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
