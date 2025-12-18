@@ -50,25 +50,47 @@ public class DamageClaim {
     }
 
     // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() { 
+    return id;
+     }
+    public void setId(Long id) { 
+    this.id = id; 
+    }
 
-    public Parcel getParcel() { return parcel; }
-    public void setParcel(Parcel parcel) { this.parcel = parcel; }
+    public Parcel getParcel() {
+     return parcel; 
+     }
+    public void setParcel(Parcel parcel) {
+     this.parcel = parcel;
+      }
 
-    public String getClaimDescription() { return claimDescription; }
+    public String getClaimDescription() {
+     return claimDescription; 
+     }
     public void setClaimDescription(String claimDescription) {
         this.claimDescription = claimDescription;
     }
 
-    public LocalDateTime getFiledAt() { return filedAt; }
-    public void setFiledAt(LocalDateTime filedAt) { this.filedAt = filedAt; }
+    public LocalDateTime getFiledAt() {
+     return filedAt;
+      }
+    public void setFiledAt(LocalDateTime filedAt) {
+     this.filedAt = filedAt;
+      }
 
-    public String getStatus() { return status; }
-    public void setStatus(String status) { this.status = status; }
+    public String getStatus() {
+     return status; 
+     }
+    public void setStatus(String status) { 
+    this.status = status;
+     }
 
-    public Double getScore() { return score; }
-    public void setScore(Double score) { this.score = score; }
+    public Double getScore() {
+     return score;
+      }
+    public void setScore(Double score) { 
+    this.score = score; 
+    }
 
     public List<ClaimRule> getAppliedRules() { return appliedRules; }
     public void setAppliedRules(List<ClaimRule> appliedRules) {
