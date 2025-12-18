@@ -1,6 +1,12 @@
 package com.example.demo.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Table;
+import java.util.Set;
 
 @Entity
 @Table(name = "claim_rules")
@@ -11,32 +17,24 @@ public class ClaimRule {
     private Long id;
 
     private String ruleName;
+
     private String conditionExpression;
+
     private Double weight;
 
-    // Default Constructor
-    public ClaimRule() {}
+    @ManyToMany(mappedBy = "appliedRules")
+    private Set<DamageClaim> claims;
 
-    // Parameterized Constructor
-    public ClaimRule(Long id, String ruleName, String conditionExpression, Double weight) {
-        this.id = id;
+    public ClaimRule() {
+    }
+
+    public ClaimRule(String ruleName, String conditionExpression, Double weight) {
         this.ruleName = ruleName;
         this.conditionExpression = conditionExpression;
         this.weight = weight;
     }
 
-    // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getRuleName() { return ruleName; }
-    public void setRuleName(String ruleName) { this.ruleName = ruleName; }
-
-    public String getConditionExpression() { return conditionExpression; }
-    public void setConditionExpression(String conditionExpression) {
-        this.conditionExpression = conditionExpression;
+    public Double getWeight() {
+        return weight;
     }
-
-    public Double getWeight() { return weight; }
-    public void setWeight(Double weight) { this.weight = weight; }
 }
