@@ -1,56 +1,60 @@
 package com.example.demo.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
-@Table(name = "parcels", uniqueConstraints = {
-        @UniqueConstraint(columnNames = "trackingNumber")
-})
+@Table(name = "parcels")
 public class Parcel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String trackingNumber;
+
     private String senderName;
+
     private String receiverName;
+
     private Double weightKg;
+
     private LocalDateTime deliveredAt;
 
-    // Default Constructor
+    @ManyToOne
+    private User user;
+
+    @OneToMany(mappedBy = "parcel")
+    private List<DamageClaim> claims;
+
     public Parcel() {
-        
     }
 
-    // Parameterized Constructor
-    public Parcel(Long id, String trackingNumber, String senderName,
-                  String receiverName, Double weightKg, LocalDateTime deliveredAt) {
-        this.id = id;
+    public Parcel(String trackingNumber, String senderName, String receiverName, Double weightKg) {
         this.trackingNumber = trackingNumber;
         this.senderName = senderName;
         this.receiverName = receiverName;
         this.weightKg = weightKg;
-        this.deliveredAt = deliveredAt;
     }
 
-    // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getTrackingNumber() { return trackingNumber; }
-    public void setTrackingNumber(String trackingNumber) { this.trackingNumber = trackingNumber; }
+    public String getTrackingNumber() {
+        return trackingNumber;
+    }
 
-    public String getSenderName() { return senderName; }
-    public void setSenderName(String senderName) { this.senderName = senderName; }
-
-    public String getReceiverName() { return receiverName; }
-    public void setReceiverName(String receiverName) { this.receiverName = receiverName; }
-
-    public Double getWeightKg() { return weightKg; }
-    public void setWeightKg(Double weightKg) { this.weightKg = weightKg; }
-
-    public LocalDateTime getDeliveredAt() { return deliveredAt; }
-    public void setDeliveredAt(LocalDateTime deliveredAt) { this.deliveredAt = deliveredAt; }
+    public Double getWeightKg() {
+        return weightKg;
+    }
 }

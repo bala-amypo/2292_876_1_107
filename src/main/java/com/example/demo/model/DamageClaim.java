@@ -1,8 +1,16 @@
 package com.example.demo.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.Table;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "damage_claims")
@@ -13,87 +21,48 @@ public class DamageClaim {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "parcel_id", nullable = false)
     private Parcel parcel;
 
     private String claimDescription;
+
     private LocalDateTime filedAt;
-    private String status; // PENDING / APPROVED / REJECTED
+
+    private String status;
+
     private Double score;
 
     @ManyToMany
-    @JoinTable(
-        name = "claim_applied_rules",
-        joinColumns = @JoinColumn(name = "claim_id"),
-        inverseJoinColumns = @JoinColumn(name = "rule_id")
-    )
-    private List<ClaimRule> appliedRules;
+    private Set<ClaimRule> appliedRules;
 
-    @PrePersist
-    public void prePersist() {
-        this.filedAt = LocalDateTime.now();
+    @OneToMany(mappedBy = "claim")
+    private Set<Evidence> evidenceList;
+
+    public DamageClaim() {
         this.status = "PENDING";
     }
 
-    // Default Constructor
-    public DamageClaim() {}
+    @PrePersist
+    public void onCreate() {
+        this.filedAt = LocalDateTime.now();
+    }
 
-    // Parameterized Constructor
-    public DamageClaim(Long id, Parcel parcel, String claimDescription,
-                       LocalDateTime filedAt, String status, Double score) {
-        this.id = id;
+    public Long getId() {
+        return id;
+    }
+
+    public void setParcel(Parcel parcel) {
         this.parcel = parcel;
-        this.claimDescription = claimDescription;
-        this.filedAt = filedAt;
+    }
+
+    public void setStatus(String status) {
         this.status = status;
+    }
+
+    public void setScore(Double score) {
         this.score = score;
     }
 
-    // Getters and Setters
-    public Long getId() { 
-    return id;
-     }
-    public void setId(Long id) { 
-    this.id = id; 
-    }
-
-    public Parcel getParcel() {
-     return parcel; 
-     }
-    public void setParcel(Parcel parcel) {
-     this.parcel = parcel;
-      }
-
-    public String getClaimDescription() {
-     return claimDescription; 
-     }
-    public void setClaimDescription(String claimDescription) {
-        this.claimDescription = claimDescription;
-    }
-
-    public LocalDateTime getFiledAt() {
-     return filedAt;
-      }
-    public void setFiledAt(LocalDateTime filedAt) {
-     this.filedAt = filedAt;
-      }
-
-    public String getStatus() {
-     return status; 
-     }
-    public void setStatus(String status) { 
-    this.status = status;
-     }
-
-    public Double getScore() {
-     return score;
-      }
-    public void setScore(Double score) { 
-    this.score = score; 
-    }
-
-    public List<ClaimRule> getAppliedRules() { return appliedRules; }
-    public void setAppliedRules(List<ClaimRule> appliedRules) {
+    public void setAppliedRules(Set<ClaimRule> appliedRules) {
         this.appliedRules = appliedRules;
     }
 }
