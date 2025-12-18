@@ -7,7 +7,7 @@ import com.example.demo.service.ClaimRuleService;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
-@Sevice
+@Service
 public class ClaimRuleServiceImpl implements ClaimRuleService {
 
     private final ClaimRuleRepository ruleRepository;

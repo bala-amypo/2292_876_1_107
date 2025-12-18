@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Set;
 
-@Sevice
+@Service
 public class DamageClaimServiceImpl implements DamageClaimService {
 
     private final ParcelRepository parcelRepository;

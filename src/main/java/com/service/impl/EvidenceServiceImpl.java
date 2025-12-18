@@ -9,7 +9,7 @@ import com.example.demo.service.EvidenceService;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
-@Sevice
+@Service
 public class EvidenceServiceImpl implements EvidenceService {
 
     private final EvidenceRepository evidenceRepository;
