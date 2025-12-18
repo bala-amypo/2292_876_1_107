@@ -17,11 +17,20 @@ public class User {
 
     private String password;
 
-    private String role = "AGENT";
+    private String role;
 
-    // JPA required
-    
+    // Default constructor
+    public User() {}
 
+    // Parameterized constructor
+    public User(String name, String email, String password, String role) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+
+    // Getters & Setters
     public Long getId() {
         return id;
     }
@@ -33,19 +42,19 @@ public class User {
     public String getName() {
         return name;
     }
- 
+
     public void setName(String name) {
         this.name = name;
     }
- 
+
     public String getEmail() {
         return email;
     }
- 
+
     public void setEmail(String email) {
         this.email = email;
     }
- 
+
     public String getPassword() {
         return password;
     }
@@ -59,17 +68,6 @@ public class User {
     }
  
     public void setRole(String role) {
-        this.role = role;
-    }
-    public User() {
-        
-    }
-
-    // Parameterized constructor
-    public User(String name, String email, String password, String role) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
         this.role = role;
     }
 }
