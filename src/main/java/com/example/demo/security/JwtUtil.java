@@ -1,39 +1,43 @@
 package com.example.demo.security;
 
-import org.springframework.stereotype.Component;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.ExpiredJwtException;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.Date;
 
-@Component
 public class JwtUtil {
 
     private final String secretKey;
     private final long expirationMillis;
 
-    // REQUIRED constructor
-    public JwtUtil() {
-        this.secretKey = "secret";
-        this.expirationMillis = 3600000;
+    // ✅ REQUIRED constructor (TEST EXPECTS THIS)
+    public JwtUtil(String secretKey, long expirationMillis) {
+        this.secretKey = secretKey;
+        this.expirationMillis = expirationMillis;
     }
 
-    // REQUIRED by tests
+    // ✅ REQUIRED signature
     public String generateToken(Long userId, String email, String role) {
-        // Fake token generation (tests only check non-null)
-        return UUID.randomUUID().toString();
+        return Jwts.builder()
+                .claim("userId", userId)
+                .claim("email", email)
+                .claim("role", role)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + expirationMillis))
+                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .compact();
     }
 
-    // 🔴 REQUIRED by JwtAuthenticationFilter
-    public boolean validateToken(String token) {
-        return token != null && !token.trim().isEmpty();
-    }
+    // ✅ REQUIRED by JwtAuthenticationFilter
+    public Claims validateToken(String token)
+            throws JwtException, ExpiredJwtException {
 
-    // OPTIONAL helper (safe)
-    public Map<String, Object> extractClaims(String token) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("email", "test@example.com");
-        claims.put("role", "ROLE_AGENT");
-        return claims;
+        return Jwts.parser()
+                .setSigningKey(secretKey)
+                .parseClaimsJws(token)
+                .getBody();
     }
 }

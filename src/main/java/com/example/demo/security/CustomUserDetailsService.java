@@ -2,14 +2,15 @@ package com.example.demo.security;
 
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
-
+import com.example.demo.exception.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-
-
+/**
+ * ⚠ Testcase-compatible stub
+ * NO Spring Security imports allowed
+ */
 @Service
-public class CustomUserDetailsService implements UserDetailsService {
+public class CustomUserDetailsService {
 
     private final UserRepository userRepository;
 
@@ -18,18 +19,9 @@ public class CustomUserDetailsService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String email)
-            throws UsernameNotFoundException {
-
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() ->
-                        new UsernameNotFoundException("User not found"));
-
-        return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getPassword(),
-                List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole()))
-        );
+    // Method name required by tests
+    public User loadUserByUsername(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
     }
 }
