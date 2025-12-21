@@ -1,23 +1,25 @@
 package com.example.demo.util;
 
-import com.example.demo.model.DamageClaim;
-import com.example.demo.model.ClaimRule;
 import java.util.List;
+import com.example.demo.model.ClaimRule;
+import com.example.demo.model.DamageClaim;
 
 public class RuleEngineUtil {
 
-    // Static method to evaluate a damage claim against a list of rules
-    public static boolean evaluate(DamageClaim claim, List<ClaimRule> rules) {
-        if (claim == null || rules == null) {
-            return false;
-        }
+    public static double computeScore(
+            DamageClaim claim,
+            List<ClaimRule> rules) {
 
-        // Example logic: check if claim amount is within all rules' limits
-        for (ClaimRule rule : rules) {
-            if (claim.getAmount() > rule.getMaxAmount()) {
-                return false; // claim violates a rule
+        double score = 0.0;
+
+        if (rules != null) {
+            for (ClaimRule rule : rules) {
+                if (claim.getAmount() <= rule.getMaxAmount()) {
+                    score += rule.getWeight();
+                }
             }
         }
-        return true; // all rules passed
+
+        return score;
     }
 }

@@ -47,14 +47,13 @@ public class DamageClaimServiceImpl implements DamageClaimService {
                 .orElseThrow(() -> new ResourceNotFoundException("Claim not found"));
 
         List<ClaimRule> rules = ruleRepository.findAll();
-        double score = RuleEngineUtil.evaluate(claim, rules);
+        double score = RuleEngineUtil.computeScore(claim, rules);
 
         claim.setScore(score);
-        claim.setAppliedRules(Set.copyOf(rules));
 
-        if (score > 0.9) {
+        if (score > 0) {
             claim.setStatus("APPROVED");
-        } else if (score == 0.0) {
+        } else  {
             claim.setStatus("REJECTED");
         }
 
