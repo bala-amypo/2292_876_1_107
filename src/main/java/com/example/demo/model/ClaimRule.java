@@ -4,9 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import java.util.Set;
 
 @Entity
 @Table(name = "claim_rules")
@@ -16,25 +14,31 @@ public class ClaimRule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String ruleName;
+    private double maxAmount;   // 🔥 REQUIRED
+    private double weight;
 
-    private String conditionExpression;
-
-    private Double weight;
-
-    @ManyToMany(mappedBy = "appliedRules")
-    private Set<DamageClaim> claims;
-
-    public ClaimRule() {
+    public Long getId() {
+        return id;
     }
 
-    public ClaimRule(String ruleName, String conditionExpression, Double weight) {
-        this.ruleName = ruleName;
-        this.conditionExpression = conditionExpression;
-        this.weight = weight;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public Double getWeight() {
+    // 🔥 REQUIRED BY RuleEngineUtil
+    public double getMaxAmount() {
+        return maxAmount;
+    }
+
+    public void setMaxAmount(double maxAmount) {
+        this.maxAmount = maxAmount;
+    }
+
+    public double getWeight() {
         return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
     }
 }
