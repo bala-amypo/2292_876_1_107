@@ -18,12 +18,17 @@ public class DamageClaimServiceImpl implements DamageClaimService {
     }
 
     @Override
-    public List<DamageClaim> getAllClaims() {
-        return repository.findAll();
+    public DamageClaim createClaim(DamageClaim claim) {
+        return repository.save(claim);
     }
 
     @Override
-    public DamageClaim createClaim(DamageClaim claim) {
-        return repository.save(claim);
+    public DamageClaim getClaim(Long id) {
+        return repository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<DamageClaim> getAllClaims() {
+        return repository.findAll();
     }
 }
