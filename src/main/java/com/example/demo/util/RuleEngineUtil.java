@@ -1,21 +1,23 @@
 package com.example.demo.util;
 
-import com.example.demo.model.ClaimRule;
-import com.example.demo.model.DamageClaim;
 import java.util.List;
+import com.example.demo.model.ClaimRule;
 
 public class RuleEngineUtil {
 
-    private RuleEngineUtil() {
-    }
+    public static int computeScore(
+            String claimType,
+            String severity,
+            List<ClaimRule> rules) {
 
-    public static double evaluate(DamageClaim claim, List<ClaimRule> rules) {
-        double score = 0.0;
+        int score = 0;
 
-        for (ClaimRule rule : rules) {
-            score += rule.getWeight();
+        if (rules != null) {
+            for (ClaimRule rule : rules) {
+                score += rule.getWeight();
+            }
         }
 
-        return Math.min(score, 1.0);
+        return score;
     }
 }
