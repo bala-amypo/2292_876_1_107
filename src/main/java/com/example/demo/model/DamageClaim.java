@@ -46,7 +46,7 @@ public class DamageClaim {
         this.filedAt = LocalDateTime.now();
     }
 
-    // ================= GETTERS & SETTERS =================
+    //GETTERS & SETTERS 
 
     public Long getId() {
         return id;
