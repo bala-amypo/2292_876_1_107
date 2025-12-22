@@ -1,16 +1,13 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "parcels")
@@ -28,31 +25,18 @@ public class Parcel {
 
     private String status;
 
-    private LocalDateTime createdAt;
-
     @ManyToOne
+    @JsonIgnore
     private User sender;
 
     @ManyToOne
+    @JsonIgnore
     private User receiver;
 
-    @OneToMany(mappedBy = "parcel")
-    private List<DamageClaim> damageClaims;
-
-    // ===== Constructors =====
-
-    public Parcel() {
-        this.createdAt = LocalDateTime.now();
-    }
-
-    // ===== Getters & Setters =====
+    public Parcel() {}
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getTrackingNumber() {
@@ -79,14 +63,6 @@ public class Parcel {
         this.status = status;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public User getSender() {
         return sender;
     }
@@ -101,13 +77,5 @@ public class Parcel {
 
     public void setReceiver(User receiver) {
         this.receiver = receiver;
-    }
-
-    public List<DamageClaim> getDamageClaims() {
-        return damageClaims;
-    }
-
-    public void setDamageClaims(List<DamageClaim> damageClaims) {
-        this.damageClaims = damageClaims;
     }
 }

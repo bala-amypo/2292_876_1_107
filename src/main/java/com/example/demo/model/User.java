@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,21 +22,15 @@ public class User {
 
     private String email;
 
-    // 🔑 REQUIRED FOR SECURITY
     private String password;
 
-    // 🔑 REQUIRED FOR AUTHORIZATION (e.g. ROLE_USER, ROLE_ADMIN)
     private String role;
 
-    // 🔗 FIXED MAPPING (matches Parcel.java: private User sender;)
     @OneToMany(mappedBy = "sender")
+    @JsonIgnore
     private List<Parcel> parcels;
 
-    // ===== Constructors =====
-    public User() {
-    }
-
-    // ===== Getters & Setters =====
+    public User() {}
 
     public Long getId() {
         return id;
@@ -61,7 +56,6 @@ public class User {
         this.email = email;
     }
 
-    // 🔑 REQUIRED BY CustomUserDetailsService
     public String getPassword() {
         return password;
     }
@@ -70,7 +64,6 @@ public class User {
         this.password = password;
     }
 
-    // 🔑 REQUIRED BY SECURITY + UserServiceImpl
     public String getRole() {
         return role;
     }
