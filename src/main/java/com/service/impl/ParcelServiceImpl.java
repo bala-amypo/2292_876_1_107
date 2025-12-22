@@ -1,27 +1,41 @@
-package com.example.demo.config;
+package com.example.demo.service.impl;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.web.SecurityFilterChain;
+import com.example.demo.model.Parcel;
+import com.example.demo.repository.ParcelRepository;
+import com.example.demo.service.ParcelService;
+import org.springframework.stereotype.Service;
 
-@Configuration
-public class SecurityConfig {
+import java.util.List;
+import java.util.UUID;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+@Service
+public class ParcelServiceImpl implements ParcelService {
 
-        http
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers(
-                        "/swagger-ui/**",
-                        "/v3/api-docs/**",
-                        "/rules/**"      // ✅ ALLOW RULE APIs
-                ).permitAll()
-                .anyRequest().permitAll()
-            );
+    private final ParcelRepository parcelRepository;
 
-        return http.build();
+    public ParcelServiceImpl(ParcelRepository parcelRepository) {
+        this.parcelRepository = parcelRepository;
+    }
+
+    @Override
+    public Parcel createParcel(Parcel parcel) {
+        if (parcel.getTrackingNumber() == null) {
+            parcel.setTrackingNumber(UUID.randomUUID().toString());
+        }
+        if (parcel.getStatus() == null) {
+            parcel.setStatus("CREATED");
+        }
+        return parcelRepository.save(parcel);
+    }
+
+    @Override
+    public List<Parcel> getAllParcels() {
+        return parcelRepository.findAll();
+    }
+
+    @Override
+    public Parcel getParcel(Long id) {
+        return parcelRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Parcel not found"));
     }
 }
