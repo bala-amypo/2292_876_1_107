@@ -7,8 +7,6 @@ import com.example.demo.repository.EvidenceRepository;
 import com.example.demo.service.EvidenceService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class EvidenceServiceImpl implements EvidenceService {
 
@@ -17,26 +15,18 @@ public class EvidenceServiceImpl implements EvidenceService {
 
     public EvidenceServiceImpl(
             EvidenceRepository evidenceRepository,
-            DamageClaimRepository damageClaimRepository) {
-
+            DamageClaimRepository damageClaimRepository
+    ) {
         this.evidenceRepository = evidenceRepository;
         this.damageClaimRepository = damageClaimRepository;
     }
 
     @Override
     public Evidence addEvidence(Long claimId, Evidence evidence) {
-
         DamageClaim claim = damageClaimRepository.findById(claimId)
                 .orElseThrow(() -> new RuntimeException("Claim not found"));
 
-        evidence.setDamageClaim(claim);
-
+        evidence.setClaim(claim);
         return evidenceRepository.save(evidence);
-    }
-
-    @Override
-    public List<Evidence> getEvidenceForClaim(Long claimId) {
-
-        return evidenceRepository.findByDamageClaimId(claimId);
     }
 }
