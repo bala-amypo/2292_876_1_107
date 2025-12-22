@@ -1,37 +1,27 @@
-package com.example.demo.service.impl;
+package com.example.demo.config;
 
-import com.example.demo.exception.BadRequestException;
-import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.model.Parcel;
-import com.example.demo.repository.ParcelRepository;
-import com.example.demo.service.ParcelService;
-import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.web.SecurityFilterChain;
 
-@Service
-public class ParcelServiceImpl implements ParcelService {
+@Configuration
+public class SecurityConfig {
 
-    private final ParcelRepository parcelRepository;
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-    public ParcelServiceImpl(ParcelRepository parcelRepository) {
-        this.parcelRepository = parcelRepository;
-    }
+        http
+            .csrf(csrf -> csrf.disable())
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(
+                        "/swagger-ui/**",
+                        "/v3/api-docs/**",
+                        "/rules/**"      // ✅ ALLOW RULE APIs
+                ).permitAll()
+                .anyRequest().permitAll()
+            );
 
-    @Override
-    public Parcel addParcel(Parcel parcel) {
-        if (parcelRepository.existsByTrackingNumber(parcel.getTrackingNumber())) {
-            throw new BadRequestException("Tracking number exists");
-        }
-
-        if (parcel.getWeightKg() <= 0) {
-            throw new BadRequestException("Invalid weight");
-        }
-
-        return parcelRepository.save(parcel);
-    }
-
-    @Override
-    public Parcel getByTrackingNumber(String trackingNumber) {
-        return parcelRepository.findByTrackingNumber(trackingNumber)
-                .orElseThrow(() -> new ResourceNotFoundException("Parcel not found"));
+        return http.build();
     }
 }
