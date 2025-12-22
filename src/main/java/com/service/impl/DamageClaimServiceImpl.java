@@ -7,6 +7,8 @@ import com.example.demo.repository.ParcelRepository;
 import com.example.demo.service.DamageClaimService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class DamageClaimServiceImpl implements DamageClaimService {
 
@@ -31,5 +33,10 @@ public class DamageClaimServiceImpl implements DamageClaimService {
         claim.setStatus("FILED");
 
         return damageClaimRepository.save(claim);
+    }
+
+    @Override
+    public List<DamageClaim> getAllClaims() {
+        return damageClaimRepository.findAll();
     }
 }

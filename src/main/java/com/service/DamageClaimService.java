@@ -8,9 +8,5 @@ public interface DamageClaimService {
 
     DamageClaim fileClaim(Long parcelId, DamageClaim claim);
 
-    DamageClaim evaluateClaim(Long claimId);
-
-    DamageClaim getClaim(Long id);
-
     List<DamageClaim> getAllClaims();
 }
