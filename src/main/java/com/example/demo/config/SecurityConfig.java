@@ -18,6 +18,7 @@ public class SecurityConfig {
                     "/v3/api-docs/**",
                     "/rules/**",
                     "/parcels/**",
+                    "/damage-claims/**",
                     "/evidence/**"
                 ).permitAll()
                 .anyRequest().permitAll()
