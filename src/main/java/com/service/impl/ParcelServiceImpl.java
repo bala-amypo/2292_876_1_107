@@ -6,6 +6,7 @@ import com.example.demo.service.ParcelService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ParcelServiceImpl implements ParcelService {
@@ -18,6 +19,19 @@ public class ParcelServiceImpl implements ParcelService {
 
     @Override
     public Parcel createParcel(Parcel parcel) {
+
+        if (parcel.getWeightKg() == null) {
+            throw new RuntimeException("weightKg is required");
+        }
+
+        if (parcel.getTrackingNumber() == null) {
+            parcel.setTrackingNumber(UUID.randomUUID().toString());
+        }
+
+        if (parcel.getStatus() == null) {
+            parcel.setStatus("CREATED");
+        }
+
         return parcelRepository.save(parcel);
     }
 
