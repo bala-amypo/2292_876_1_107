@@ -21,14 +21,17 @@ public class User {
 
     private String email;
 
-    // 🔴 IMPORTANT FIX HERE
-    // mappedBy MUST match field name in Parcel.java
-    // Parcel.java has: private User sender;
+    // 🔑 REQUIRED FOR SECURITY
+    private String password;
+
+    // 🔑 REQUIRED FOR AUTHORIZATION (e.g. ROLE_USER, ROLE_ADMIN)
+    private String role;
+
+    // 🔗 FIXED MAPPING (matches Parcel.java: private User sender;)
     @OneToMany(mappedBy = "sender")
     private List<Parcel> parcels;
 
     // ===== Constructors =====
-
     public User() {
     }
 
@@ -56,6 +59,24 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    // 🔑 REQUIRED BY CustomUserDetailsService
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    // 🔑 REQUIRED BY SECURITY + UserServiceImpl
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public List<Parcel> getParcels() {
