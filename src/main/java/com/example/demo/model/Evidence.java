@@ -1,13 +1,12 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "evidence")
@@ -17,24 +16,32 @@ public class Evidence {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private DamageClaim claim;
-
-    private String evidenceType;
-
     private String fileUrl;
 
-    private LocalDateTime uploadedAt;
+    @ManyToOne
+    @JsonIgnore
+    private DamageClaim damageClaim;
 
     public Evidence() {
     }
 
-    @PrePersist
-    public void onUpload() {
-        this.uploadedAt = LocalDateTime.now();
+    public Long getId() {
+        return id;
     }
 
-    public void setClaim(DamageClaim claim) {
-        this.claim = claim;
+    public String getFileUrl() {
+        return fileUrl;
+    }
+
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
+    }
+
+    public DamageClaim getDamageClaim() {
+        return damageClaim;
+    }
+
+    public void setDamageClaim(DamageClaim damageClaim) {
+        this.damageClaim = damageClaim;
     }
 }

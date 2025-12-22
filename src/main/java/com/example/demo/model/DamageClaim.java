@@ -1,18 +1,12 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
-
-import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "damage_claims")
@@ -22,58 +16,29 @@ public class DamageClaim {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "parcel_id")
-    private Parcel parcel;
-
-    private String claimDescription;
-
-    private LocalDateTime filedAt;
+    private String description;
 
     private String status;
 
     private Double score;
 
-    @ManyToMany
-    private Set<ClaimRule> appliedRules = new HashSet<>();
+    @ManyToOne
+    @JsonIgnore
+    private Parcel parcel;
 
     public DamageClaim() {
-        this.status = "PENDING";
     }
-
-    @PrePersist
-    public void onCreate() {
-        this.filedAt = LocalDateTime.now();
-    }
-
-    //GETTERS & SETTERS 
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public String getDescription() {
+        return description;
     }
 
-    public Parcel getParcel() {
-        return parcel;
-    }
-
-    public void setParcel(Parcel parcel) {
-        this.parcel = parcel;
-    }
-
-    public String getClaimDescription() {
-        return claimDescription;
-    }
-
-    public void setClaimDescription(String claimDescription) {
-        this.claimDescription = claimDescription;
-    }
-
-    public LocalDateTime getFiledAt() {
-        return filedAt;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getStatus() {
@@ -92,11 +57,11 @@ public class DamageClaim {
         this.score = score;
     }
 
-    public Set<ClaimRule> getAppliedRules() {
-        return appliedRules;
+    public Parcel getParcel() {
+        return parcel;
     }
 
-    public void setAppliedRules(Set<ClaimRule> appliedRules) {
-        this.appliedRules = appliedRules;
+    public void setParcel(Parcel parcel) {
+        this.parcel = parcel;
     }
 }
