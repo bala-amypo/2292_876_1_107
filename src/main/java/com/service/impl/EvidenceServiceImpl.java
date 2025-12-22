@@ -7,6 +7,8 @@ import com.example.demo.repository.EvidenceRepository;
 import com.example.demo.service.EvidenceService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EvidenceServiceImpl implements EvidenceService {
 
@@ -30,5 +32,11 @@ public class EvidenceServiceImpl implements EvidenceService {
         evidence.setDamageClaim(claim);
 
         return evidenceRepository.save(evidence);
+    }
+
+    @Override
+    public List<Evidence> getEvidenceForClaim(Long claimId) {
+
+        return evidenceRepository.findByDamageClaimId(claimId);
     }
 }
