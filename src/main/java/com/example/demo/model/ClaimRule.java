@@ -14,7 +14,7 @@ public class ClaimRule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private double maxAmount;   // 🔥 REQUIRED
+    private double maxAmount;   
     private double weight;
 
     public Long getId() {
