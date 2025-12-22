@@ -25,7 +25,7 @@ public class ClaimRule {
         this.id = id;
     }
 
-    // 🔥 REQUIRED BY RuleEngineUtil
+
     public double getMaxAmount() {
         return maxAmount;
     }
