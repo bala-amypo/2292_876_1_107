@@ -1,10 +1,10 @@
 package com.example.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.GenerationationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -19,14 +19,18 @@ public class Evidence {
     private String fileUrl;
 
     @ManyToOne
-    @JsonIgnore
-    private DamageClaim damageClaim;
+    @JoinColumn(name = "claim_id")
+    private DamageClaim claim;
 
     public Evidence() {
     }
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFileUrl() {
@@ -37,11 +41,11 @@ public class Evidence {
         this.fileUrl = fileUrl;
     }
 
-    public DamageClaim getDamageClaim() {
-        return damageClaim;
+    public DamageClaim getClaim() {
+        return claim;
     }
 
-    public void setDamageClaim(DamageClaim damageClaim) {
-        this.damageClaim = damageClaim;
+    public void setClaim(DamageClaim claim) {
+        this.claim = claim;
     }
 }
