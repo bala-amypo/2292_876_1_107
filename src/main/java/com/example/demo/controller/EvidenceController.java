@@ -2,9 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Evidence;
 import com.example.demo.service.EvidenceService;
-import java.util.List;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,19 +20,12 @@ public class EvidenceController {
     }
 
     @PostMapping("/{claimId}")
-    public ResponseEntity<Evidence> upload(
+    public ResponseEntity<Evidence> addEvidence(
             @PathVariable Long claimId,
             @RequestBody Evidence evidence) {
 
         return ResponseEntity.ok(
-                evidenceService.uploadEvidence(claimId, evidence)
-        );
-    }
-
-    @GetMapping("/{claimId}")
-    public ResponseEntity<List<Evidence>> getByClaim(@PathVariable Long claimId) {
-        return ResponseEntity.ok(
-                evidenceService.getEvidenceForClaim(claimId)
+                evidenceService.addEvidence(claimId, evidence)
         );
     }
 }
