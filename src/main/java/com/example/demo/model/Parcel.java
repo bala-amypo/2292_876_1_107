@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -22,39 +23,91 @@ public class Parcel {
     @Column(unique = true)
     private String trackingNumber;
 
-    private String senderName;
-
-    private String receiverName;
-
+    @Column(nullable = false)
     private Double weightKg;
 
-    private LocalDateTime deliveredAt;
+    private String status;
+
+    private LocalDateTime createdAt;
 
     @ManyToOne
-    private User user;
+    private User sender;
+
+    @ManyToOne
+    private User receiver;
 
     @OneToMany(mappedBy = "parcel")
-    private List<DamageClaim> claims;
+    private List<DamageClaim> damageClaims;
+
+    // ===== Constructors =====
 
     public Parcel() {
+        this.createdAt = LocalDateTime.now();
     }
 
-    public Parcel(String trackingNumber, String senderName, String receiverName, Double weightKg) {
-        this.trackingNumber = trackingNumber;
-        this.senderName = senderName;
-        this.receiverName = receiverName;
-        this.weightKg = weightKg;
-    }
+    // ===== Getters & Setters =====
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTrackingNumber() {
         return trackingNumber;
     }
 
+    public void setTrackingNumber(String trackingNumber) {
+        this.trackingNumber = trackingNumber;
+    }
+
     public Double getWeightKg() {
         return weightKg;
+    }
+
+    public void setWeightKg(Double weightKg) {
+        this.weightKg = weightKg;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public User getSender() {
+        return sender;
+    }
+
+    public void setSender(User sender) {
+        this.sender = sender;
+    }
+
+    public User getReceiver() {
+        return receiver;
+    }
+
+    public void setReceiver(User receiver) {
+        this.receiver = receiver;
+    }
+
+    public List<DamageClaim> getDamageClaims() {
+        return damageClaims;
+    }
+
+    public void setDamageClaims(List<DamageClaim> damageClaims) {
+        this.damageClaims = damageClaims;
     }
 }

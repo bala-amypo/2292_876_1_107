@@ -6,7 +6,6 @@ import com.example.demo.service.ParcelService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class ParcelServiceImpl implements ParcelService {
@@ -19,12 +18,6 @@ public class ParcelServiceImpl implements ParcelService {
 
     @Override
     public Parcel createParcel(Parcel parcel) {
-        if (parcel.getTrackingNumber() == null) {
-            parcel.setTrackingNumber(UUID.randomUUID().toString());
-        }
-        if (parcel.getStatus() == null) {
-            parcel.setStatus("CREATED");
-        }
         return parcelRepository.save(parcel);
     }
 
@@ -36,6 +29,12 @@ public class ParcelServiceImpl implements ParcelService {
     @Override
     public Parcel getParcel(Long id) {
         return parcelRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Parcel not found"));
+    }
+
+    @Override
+    public Parcel getByTrackingNumber(String trackingNumber) {
+        return parcelRepository.findByTrackingNumber(trackingNumber)
                 .orElseThrow(() -> new RuntimeException("Parcel not found"));
     }
 }
