@@ -11,7 +11,7 @@ import jakarta.persistence.Table;
 public class ClaimRule {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private double maxAmount;   
