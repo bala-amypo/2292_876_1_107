@@ -13,10 +13,8 @@ public class ClaimRule {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     private double maxAmount;   
     private double weight;
-
     public Long getId() {
         return id;
     }
