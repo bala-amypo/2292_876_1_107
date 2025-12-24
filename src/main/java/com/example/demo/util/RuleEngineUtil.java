@@ -5,7 +5,6 @@ import java.util.List;
 
 public class RuleEngineUtil {
 public static double computeScore(String description, List<ClaimRule> rules) {}
-
 if (description == null || rules == null || rules.isEmpty()) {
 return 0.0;
 }
@@ -18,10 +17,11 @@ if (description.contains(rule.getKeyword())) {
 score += rule.getWeight();
 }
 } catch (Exception e) {
-// invalid rule expression → ignore
+    
 }
 }
 
-return Math.min(score, 1.0);
+return score;
 }
-}
+
+
