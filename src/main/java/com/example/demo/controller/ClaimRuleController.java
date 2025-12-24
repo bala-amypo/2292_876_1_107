@@ -2,9 +2,12 @@ package com.example.demo.controller;
 
 import com.example.demo.model.ClaimRule;
 import com.example.demo.service.ClaimRuleService;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/rules")
@@ -16,13 +19,13 @@ public class ClaimRuleController {
         this.ruleService = ruleService;
     }
 
-   @PostMapping
-    public ResponseEntity<ClaimRule> createRule(@RequestBody ClaimRule rule) {
-        ClaimRule savedRule = ruleService.createRule(rule);
-        return ResponseEntity.ok(savedRule);
+    @PostMapping
+    public ClaimRule addRule(@RequestBody ClaimRule rule) {
+        return ruleService.addRule(rule);
     }
+
     @GetMapping
-    public ResponseEntity<List<ClaimRule>> getAllRules() {
-        return ResponseEntity.ok(ruleService.getAllRules());
+    public List<ClaimRule> getAll() {
+        return ruleService.getAllRules();
     }
 }
