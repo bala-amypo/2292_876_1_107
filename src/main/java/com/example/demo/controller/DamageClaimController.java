@@ -2,46 +2,38 @@ package com.example.demo.controller;
 
 import com.example.demo.model.DamageClaim;
 import com.example.demo.service.DamageClaimService;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
-@RequestMapping("/damage-claims")
+@RequestMapping("/claims")
 public class DamageClaimController {
 
-    private final DamageClaimService damageClaimService;
+    private final DamageClaimService claimService;
 
-    public DamageClaimController(DamageClaimService damageClaimService) {
-        this.damageClaimService = damageClaimService;
+    public DamageClaimController(DamageClaimService claimService) {
+        this.claimService = claimService;
     }
 
-    @PostMapping("/{parcelId}")
-    public ResponseEntity<?> fileClaim(
+    @PostMapping("/file/{parcelId}")
+    public DamageClaim fileClaim(
             @PathVariable Long parcelId,
             @RequestBody DamageClaim claim) {
-
-        if (claim.getDescription() == null) {
-            return ResponseEntity.badRequest().body("Description required");
-        }
-
-        try {
-            return ResponseEntity.ok(
-                    damageClaimService.fileClaim(parcelId, claim)
-            );
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+        return claimService.fileClaim(parcelId, claim);
     }
 
-    @GetMapping
-    public ResponseEntity<List<DamageClaim>> getAllClaims() {
-        return ResponseEntity.ok(damageClaimService.getAllClaims());
+    @PutMapping("/evaluate/{claimId}")
+    public DamageClaim evaluate(@PathVariable Long claimId) {
+        return claimService.evaluateClaim(claimId);
+    }
+
+    @GetMapping("/{claimId}")
+    public DamageClaim getClaim(@PathVariable Long claimId) {
+        return claimService.getClaim(claimId);
     }
 }

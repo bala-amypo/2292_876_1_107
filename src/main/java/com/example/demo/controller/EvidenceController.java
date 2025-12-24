@@ -2,13 +2,12 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Evidence;
 import com.example.demo.service.EvidenceService;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import java.util.List;
 
 @RestController
@@ -21,18 +20,15 @@ public class EvidenceController {
         this.evidenceService = evidenceService;
     }
 
-    @PostMapping("/{claimId}")
-    public Evidence addEvidence(
+    @PostMapping("/upload/{claimId}")
+    public Evidence upload(
             @PathVariable Long claimId,
             @RequestBody Evidence evidence) {
-
-        return evidenceService.addEvidence(claimId, evidence);
+        return evidenceService.uploadEvidence(claimId, evidence);
     }
 
-    @GetMapping("/{claimId}")
-    public List<Evidence> getEvidence(
-            @PathVariable Long claimId) {
-
+    @GetMapping("/claim/{claimId}")
+    public List<Evidence> getByClaim(@PathVariable Long claimId) {
         return evidenceService.getEvidenceForClaim(claimId);
     }
 }
