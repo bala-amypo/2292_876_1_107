@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import java.time.LocalDateTime;
 
 @Entity
 public class Parcel {
@@ -17,13 +18,18 @@ public class Parcel {
     private String receiverName;
     private double weightKg;
 
-    // ✅ JPA
+    // 🔥 REQUIRED BY TEST CASES
+    private LocalDateTime deliveredAt;
+
+    // ✅ JPA constructor
     public Parcel() {
     }
 
     // ✅ REQUIRED BY TEST CASES
-    public Parcel(String trackingNumber, String senderName,
-                  String receiverName, double weightKg) {
+    public Parcel(String trackingNumber,
+                  String senderName,
+                  String receiverName,
+                  double weightKg) {
         this.trackingNumber = trackingNumber;
         this.senderName = senderName;
         this.receiverName = receiverName;
@@ -70,5 +76,14 @@ public class Parcel {
 
     public void setWeightKg(double weightKg) {
         this.weightKg = weightKg;
+    }
+
+    // 🔥 FIX FOR LAST ERROR
+    public LocalDateTime getDeliveredAt() {
+        return deliveredAt;
+    }
+
+    public void setDeliveredAt(LocalDateTime deliveredAt) {
+        this.deliveredAt = deliveredAt;
     }
 }
