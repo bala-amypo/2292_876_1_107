@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -10,18 +11,33 @@ public class DamageClaim {
 @GeneratedValue(strategy = GenerationType.IDENTITY)
 private Long id;
 
+// 🔥 REQUIRED BY SERVICE LAYER
+@ManyToOne
+private Parcel parcel;
+
 private String claimDescription;
 
-@Column
-private Double score;   // ONLY ONE score field
+private Double score; // must be nullable initially
 
-private String status;
+private String status = "PENDING";
 
 @ManyToMany
-private Set<ClaimRule> appliedRules;
+private Set<ClaimRule> appliedRules = new HashSet<>();
+
+public DamageClaim() {
+}
 
 public Long getId() {
 return id;
+}
+
+// 🔥 REQUIRED METHODS
+public Parcel getParcel() {
+return parcel;
+}
+
+public void setParcel(Parcel parcel) {
+this.parcel = parcel;
 }
 
 public String getClaimDescription() {
