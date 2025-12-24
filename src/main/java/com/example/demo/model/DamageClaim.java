@@ -29,6 +29,7 @@ public class DamageClaim {
     private LocalDateTime filedAt;
 
     @Column
+    private Double score;
 
     @ManyToMany
     private Set<ClaimRule> appliedRules = new HashSet<>();
