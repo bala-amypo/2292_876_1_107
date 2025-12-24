@@ -1,6 +1,5 @@
 package com.example.demo.security;
 
-import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,7 +16,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
 
-    // REQUIRED constructor
     public JwtAuthenticationFilter(JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
     }
@@ -29,15 +27,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             FilterChain filterChain)
             throws ServletException, IOException {
 
-        String authHeader = request.getHeader("Authorization");
+        String header = request.getHeader("Authorization");
 
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+        if (header != null && header.startsWith("Bearer ")) {
 
-            String token = authHeader.substring(7);
-            Claims claims = jwtUtil.validateToken(token);
+            String token = header.substring(7);
+            String decoded = jwtUtil.validateToken(token);
 
-            String email = claims.get("email", String.class);
-            String role = claims.get("role", String.class);
+            String[] parts = decoded.split(":");
+            String email = parts[1];
+            String role = parts[2];
 
             UsernamePasswordAuthenticationToken authentication =
                     new UsernamePasswordAuthenticationToken(
