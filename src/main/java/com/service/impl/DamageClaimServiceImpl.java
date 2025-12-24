@@ -18,20 +18,20 @@ import java.util.List;
 public class DamageClaimServiceImpl implements DamageClaimService {
 
 private final DamageClaimRepository claimRepository;
-private final ClaimRuleRepository ruleRepository;
 private final ParcelRepository parcelRepository;
+private final ClaimRuleRepository ruleRepository;
 
+// 🔥 ORDER MUST MATCH TEST CONSTRUCTOR
 public DamageClaimServiceImpl(
 DamageClaimRepository claimRepository,
-ClaimRuleRepository ruleRepository,
-ParcelRepository parcelRepository) {
+ParcelRepository parcelRepository,
+ClaimRuleRepository ruleRepository) {
 
 this.claimRepository = claimRepository;
-this.ruleRepository = ruleRepository;
 this.parcelRepository = parcelRepository;
+this.ruleRepository = ruleRepository;
 }
 
-// 🔹 REQUIRED BY INTERFACE
 @Override
 public DamageClaim getClaim(Long claimId) {
 return claimRepository.findById(claimId)
@@ -39,7 +39,6 @@ return claimRepository.findById(claimId)
 new ResourceNotFoundException("claim not found"));
 }
 
-// 🔹 REQUIRED BY INTERFACE
 @Override
 public DamageClaim fileClaim(Long parcelId, DamageClaim claim) {
 
@@ -51,12 +50,10 @@ claim.setParcel(parcel);
 return claimRepository.save(claim);
 }
 
-// 🔹 TEST-ALIGNED IMPLEMENTATION
 @Override
 public DamageClaim evaluateClaim(Long claimId) {
 
 DamageClaim claim = getClaim(claimId);
-
 List<ClaimRule> rules = ruleRepository.findAll();
 
 double score = RuleEngineUtil.computeScore(
@@ -66,12 +63,7 @@ rules
 
 claim.setScore(score);
 claim.setAppliedRules(new HashSet<>(rules));
-
-if (score >= 0.5) {
-claim.setStatus("APPROVED");
-} else {
-claim.setStatus("REJECTED");
-}
+claim.setStatus(score >= 0.5 ? "APPROVED" : "REJECTED");
 
 return claimRepository.save(claim);
 }
