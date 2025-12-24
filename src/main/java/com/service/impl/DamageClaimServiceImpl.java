@@ -32,6 +32,7 @@ public class DamageClaimServiceImpl implements DamageClaimService {
 
     @Override
     public DamageClaim fileClaim(Long parcelId, DamageClaim claim) {
+
         Parcel parcel = parcelRepository.findById(parcelId)
                 .orElseThrow(() -> new ResourceNotFoundException("parcel not found"));
 
@@ -41,12 +42,14 @@ public class DamageClaimServiceImpl implements DamageClaimService {
 
     @Override
     public DamageClaim evaluateClaim(Long claimId) {
+
         DamageClaim claim = claimRepository.findById(claimId)
                 .orElseThrow(() -> new ResourceNotFoundException("claim not found"));
 
         List<ClaimRule> rules = ruleRepository.findAll();
-        double score = RuleEngineUtil.computeScore(
-                claim.getClaimDescription(), rules);
+
+        // ✅ FIXED CALL
+        double score = RuleEngineUtil.computeScore(rules);
 
         claim.setScore(score);
         claim.setAppliedRules(new HashSet<>(rules));

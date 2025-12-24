@@ -1,9 +1,9 @@
 package com.example.demo.model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 
@@ -56,5 +56,10 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    // ✅ REQUIRED FIX (for AuthController)
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
