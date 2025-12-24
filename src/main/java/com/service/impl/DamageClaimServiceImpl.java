@@ -3,8 +3,10 @@ package com.example.demo.service.impl;
 import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.ClaimRule;
 import com.example.demo.model.DamageClaim;
+import com.example.demo.model.Parcel;
 import com.example.demo.repository.ClaimRuleRepository;
 import com.example.demo.repository.DamageClaimRepository;
+import com.example.demo.repository.ParcelRepository;
 import com.example.demo.service.DamageClaimService;
 import com.example.demo.util.RuleEngineUtil;
 import org.springframework.stereotype.Service;
@@ -17,11 +19,14 @@ public class DamageClaimServiceImpl implements DamageClaimService {
 
     private final DamageClaimRepository claimRepository;
     private final ClaimRuleRepository ruleRepository;
+    private final ParcelRepository parcelRepository;
 
     public DamageClaimServiceImpl(DamageClaimRepository claimRepository,
-                                  ClaimRuleRepository ruleRepository) {
+                                  ClaimRuleRepository ruleRepository,
+                                  ParcelRepository parcelRepository) {
         this.claimRepository = claimRepository;
         this.ruleRepository = ruleRepository;
+        this.parcelRepository = parcelRepository;
     }
 
     // ✅ REQUIRED BY INTERFACE
@@ -32,7 +37,19 @@ public class DamageClaimServiceImpl implements DamageClaimService {
                         new ResourceNotFoundException("claim not found"));
     }
 
-    // ✅ CLAIM EVALUATION (TEST-ALIGNED)
+    // ✅ REQUIRED BY INTERFACE
+    @Override
+    public DamageClaim fileClaim(Long parcelId, DamageClaim claim) {
+
+        Parcel parcel = parcelRepository.findById(parcelId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("parcel not found"));
+
+        claim.setParcel(parcel);
+        return claimRepository.save(claim);
+    }
+
+    // ✅ REQUIRED BY INTERFACE + TESTS
     @Override
     public DamageClaim evaluateClaim(Long claimId) {
 
