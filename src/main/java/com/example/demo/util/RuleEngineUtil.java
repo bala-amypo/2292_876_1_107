@@ -5,18 +5,25 @@ import java.util.List;
 
 public class RuleEngineUtil {
 
-    public static double computeScore(String description, List<ClaimRule> rules) {
+    public static double computeScore(String claimDescription,
+                                      List<ClaimRule> rules) {
 
-        if (description == null || description.isBlank() || rules == null) {
+        if (claimDescription == null || rules == null || rules.isEmpty()) {
             return 0.0;
         }
 
         double score = 0.0;
 
         for (ClaimRule rule : rules) {
-            score += rule.getWeight();
+            if (rule.getDescription() != null &&
+                claimDescription.toLowerCase()
+                    .contains(rule.getDescription().toLowerCase())) {
+
+                score += rule.getWeight();
+            }
         }
 
+        // ✅ Tests expect score capped at 1.0
         return Math.min(score, 1.0);
     }
 }
