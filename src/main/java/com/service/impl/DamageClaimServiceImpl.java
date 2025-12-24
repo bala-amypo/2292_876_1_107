@@ -48,7 +48,6 @@ public class DamageClaimServiceImpl implements DamageClaimService {
 
         List<ClaimRule> rules = ruleRepository.findAll();
 
-        // ✅ FIXED: correct method signature
         double score = RuleEngineUtil.computeScore(
                 claim.getClaimDescription(),
                 rules);
@@ -64,10 +63,5 @@ public class DamageClaimServiceImpl implements DamageClaimService {
 
         return claimRepository.save(claim);
     }
-
-    @Override
-    public DamageClaim getClaim(Long claimId) {
-        return claimRepository.findById(claimId)
-                .orElseThrow(() -> new ResourceNotFoundException("claim not found"));
-    }
+    
 }
