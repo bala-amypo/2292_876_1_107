@@ -1,6 +1,12 @@
 package com.example.demo.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -10,63 +16,36 @@ public class DamageClaim {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String claimDescription;
-    private String status = "PENDING";
-    private double score;
-
     @ManyToOne
     private Parcel parcel;
 
+    private String claimDescription;
+    private double score;
+    private String status = "PENDING";
+
     @ManyToMany
-    private Set<ClaimRule> appliedRules;
+    private Set<ClaimRule> appliedRules = new HashSet<>();
 
-    public DamageClaim() {
-    }
+    public DamageClaim() {}
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public Parcel getParcel() { return parcel; }
+    public void setParcel(Parcel parcel) { this.parcel = parcel; }
 
-    public String getClaimDescription() {
-        return claimDescription;
-    }
-
+    public String getClaimDescription() { return claimDescription; }
     public void setClaimDescription(String claimDescription) {
         this.claimDescription = claimDescription;
     }
 
-    public String getStatus() {
-        return status;
-    }
+    public double getScore() { return score; }
+    public void setScore(double score) { this.score = score; }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 
-    public double getScore() {
-        return score;
-    }
-
-    public void setScore(double score) {
-        this.score = score;
-    }
-
-    public Parcel getParcel() {
-        return parcel;
-    }
-
-    public void setParcel(Parcel parcel) {
-        this.parcel = parcel;
-    }
-
-    public Set<ClaimRule> getAppliedRules() {
-        return appliedRules;
-    }
-
+    public Set<ClaimRule> getAppliedRules() { return appliedRules; }
     public void setAppliedRules(Set<ClaimRule> appliedRules) {
         this.appliedRules = appliedRules;
     }

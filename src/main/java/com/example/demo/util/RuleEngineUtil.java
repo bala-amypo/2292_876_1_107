@@ -23,7 +23,6 @@ public class RuleEngineUtil {
             }
         }
 
-        // ✅ Tests expect score capped at 1.0
         return Math.min(score, 1.0);
     }
 }
