@@ -48,8 +48,11 @@ public class DamageClaimServiceImpl implements DamageClaimService {
 
         List<ClaimRule> rules = ruleRepository.findAll();
 
-        // ✅ FIXED CALL
-        double score = RuleEngineUtil.computeScore(rules);
+        // ✅ FIXED: correct method signature
+        double score = RuleEngineUtil.computeScore(
+                claim.getClaimDescription(),
+                rules
+        );
 
         claim.setScore(score);
         claim.setAppliedRules(new HashSet<>(rules));
