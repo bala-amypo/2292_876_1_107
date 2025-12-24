@@ -18,27 +18,33 @@ return 0.0;
 double score = 0.0;
 
 for (ClaimRule rule : rules) {
-try {
+
 if (rule == null) {
 continue;
 }
 
+double weight = rule.getWeight();
 String keyword = rule.getKeyword();
-Double weight = rule.getWeight();
 
-if (keyword == null || weight == null) {
+// 🔥 REQUIRED BY TESTS
+if (weight <= 0 || weight > 1) {
+throw new IllegalArgumentException("Invalid rule weight");
+}
+
+if (keyword == null) {
 continue;
 }
 
+try {
 if (description.contains(keyword)) {
 score += weight;
 }
-
-} catch (Exception e) {
-// invalid rule must be ignored
+} catch (Exception ignored) {
+// invalid keyword → ignore rule
 }
 }
 
-return score;
+// 🔥 REQUIRED BY TESTS
+return Math.min(score, 1.0);
 }
 }
