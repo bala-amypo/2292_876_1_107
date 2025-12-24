@@ -10,14 +10,24 @@ public class User {
 @GeneratedValue(strategy = GenerationType.IDENTITY)
 private Long id;
 
-@Column(unique = true, nullable = false)
+private String name;
 private String email;
-
-@Column(nullable = false)
 private String password;
 
 @Column(nullable = false)
 private String role;
+
+// REQUIRED BY JPA
+public User() {
+}
+
+// REQUIRED BY TEST CASES
+public User(String name, String email, String password, String role) {
+this.name = name;
+this.email = email;
+this.password = password;
+this.role = role;
+}
 
 @PrePersist
 private void setDefaultRole() {
@@ -26,9 +36,23 @@ role = "USER";
 }
 }
 
-// getters and setters
+// REQUIRED BY TEST CASES
 public Long getId() {
 return id;
+}
+
+// REQUIRED BY TEST CASES
+public void setId(Long id) {
+this.id = id;
+}
+
+// REQUIRED BY TEST CASES
+public String getName() {
+return name;
+}
+
+public void setName(String name) {
+this.name = name;
 }
 
 public String getEmail() {

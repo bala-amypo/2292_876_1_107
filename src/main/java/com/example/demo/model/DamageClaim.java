@@ -68,6 +68,10 @@ public Set<ClaimRule> getAppliedRules() {
 return appliedRules;
 }
 
+public void setId(Long id) {
+    this.id = id;
+}
+
 public void setAppliedRules(Set<ClaimRule> appliedRules) {
 this.appliedRules = appliedRules;
 }
