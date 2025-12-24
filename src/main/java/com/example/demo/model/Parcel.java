@@ -4,33 +4,39 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Table;
-import jakarta.persistence.Column;
-import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "parcels")
 public class Parcel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
     private String trackingNumber;
-
     private String senderName;
     private String receiverName;
     private double weightKg;
-    private LocalDateTime deliveredAt;
 
-    public Parcel() {}
+    // ✅ JPA
+    public Parcel() {
+    }
+
+    // ✅ REQUIRED BY TEST CASES
+    public Parcel(String trackingNumber, String senderName,
+                  String receiverName, double weightKg) {
+        this.trackingNumber = trackingNumber;
+        this.senderName = senderName;
+        this.receiverName = receiverName;
+        this.weightKg = weightKg;
+    }
+
+    // ✅ GETTERS & SETTERS
 
     public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -64,13 +70,5 @@ public class Parcel {
 
     public void setWeightKg(double weightKg) {
         this.weightKg = weightKg;
-    }
-
-    public LocalDateTime getDeliveredAt() {
-        return deliveredAt;
-    }
-
-    public void setDeliveredAt(LocalDateTime deliveredAt) {
-        this.deliveredAt = deliveredAt;
     }
 }

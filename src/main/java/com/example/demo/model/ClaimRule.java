@@ -4,10 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "claim_rules")
 public class ClaimRule {
 
     @Id
@@ -15,16 +13,27 @@ public class ClaimRule {
     private Long id;
 
     private String ruleName;
-    private String conditionExpression;
+    private String description;
     private double weight;
 
-    public ClaimRule() {}
+    // ✅ JPA
+    public ClaimRule() {
+    }
+
+    // ✅ REQUIRED BY TEST CASES
+    public ClaimRule(String ruleName, String description, double weight) {
+        this.ruleName = ruleName;
+        this.description = description;
+        this.weight = weight;
+    }
+
+    // ✅ GETTERS & SETTERS
 
     public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -36,12 +45,12 @@ public class ClaimRule {
         this.ruleName = ruleName;
     }
 
-    public String getConditionExpression() {
-        return conditionExpression;
+    public String getDescription() {
+        return description;
     }
 
-    public void setConditionExpression(String conditionExpression) {
-        this.conditionExpression = conditionExpression;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public double getWeight() {

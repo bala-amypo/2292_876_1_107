@@ -4,11 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Table;
-import jakarta.persistence.Column;
 
 @Entity
-@Table(name = "users")
 public class User {
 
     @Id
@@ -16,24 +13,38 @@ public class User {
     private Long id;
 
     private String name;
-
-    @Column(unique = true)
     private String email;
-
     private String password;
     private String role;
 
+    // ✅ REQUIRED BY JPA
     public User() {
     }
 
-    // ===== REQUIRED BY TESTS & SECURITY =====
+    // ✅ REQUIRED BY TEST CASES
+    public User(String name, String email, String password, String role) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+    }
+
+    // ✅ GETTERS & SETTERS (ALL REQUIRED)
 
     public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -44,17 +55,14 @@ public class User {
         this.email = email;
     }
 
-    // 🔥 MISSING → CAUSED 4 ERRORS
     public String getPassword() {
         return password;
     }
 
-    // 🔥 REQUIRED BY AuthController
     public void setPassword(String password) {
         this.password = password;
     }
 
-    // 🔥 REQUIRED BY UserServiceImpl
     public String getRole() {
         return role;
     }
