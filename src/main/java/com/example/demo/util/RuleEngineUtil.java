@@ -4,20 +4,24 @@ import com.example.demo.model.ClaimRule;
 import java.util.List;
 
 public class RuleEngineUtil {
+public static double computeScore(String description, List<ClaimRule> rules) {}
 
-    // 🔥 EXACT SIGNATURE REQUIRED BY TESTS
-    public static double computeScore(String description, List<ClaimRule> rules) {
+if (description == null || rules == null || rules.isEmpty()) {
+return 0.0;
+}
 
-        double score = 0.0;
+double score = 0.0;
 
-        if (rules == null) {
-            return 0.0;
-        }
+for (ClaimRule rule : rules) {
+try {
+if (description.contains(rule.getKeyword())) {
+score += rule.getWeight();
+}
+} catch (Exception e) {
+// invalid rule expression → ignore
+}
+}
 
-        for (ClaimRule rule : rules) {
-            score += rule.getWeight();
-        }
-
-        return Math.min(score, 1.0);
-    }
+return Math.min(score, 1.0);
+}
 }
