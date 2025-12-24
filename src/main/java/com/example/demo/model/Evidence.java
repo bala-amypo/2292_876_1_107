@@ -20,19 +20,42 @@ public class Evidence {
     @ManyToOne
     private DamageClaim claim;
 
-    private String evidenceType;
     private String fileUrl;
+    private String evidenceType;
     private LocalDateTime uploadedAt;
 
-    public Evidence() {
-    }
+    public Evidence() {}
 
     @PrePersist
     public void onUpload() {
         this.uploadedAt = LocalDateTime.now();
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public DamageClaim getClaim() {
+        return claim;
+    }
+
     public void setClaim(DamageClaim claim) {
         this.claim = claim;
+    }
+
+    public String getFileUrl() {
+        return fileUrl;
+    }
+
+    public void setFileUrl(String fileUrl) {
+        this.fileUrl = fileUrl;
+    }
+
+    public LocalDateTime getUploadedAt() {
+        return uploadedAt;
     }
 }

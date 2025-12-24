@@ -24,9 +24,9 @@ public class DamageClaim {
     private Parcel parcel;
 
     private String claimDescription;
-    private LocalDateTime filedAt;
     private String status;
-    private Double score;
+    private double score;
+    private LocalDateTime filedAt;
 
     @ManyToMany
     private Set<ClaimRule> appliedRules = new HashSet<>();
@@ -44,20 +44,44 @@ public class DamageClaim {
         return id;
     }
 
-    public String getClaimDescription() {
-        return claimDescription;
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Parcel getParcel() {
+        return parcel;
     }
 
     public void setParcel(Parcel parcel) {
         this.parcel = parcel;
     }
 
-    public void setScore(Double score) {
-        this.score = score;
+    public String getClaimDescription() {
+        return claimDescription;
+    }
+
+    public void setClaimDescription(String claimDescription) {
+        this.claimDescription = claimDescription;
+    }
+
+    public String getStatus() {
+        return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public double getScore() {
+        return score;
+    }
+
+    public void setScore(double score) {
+        this.score = score;
+    }
+
+    public Set<ClaimRule> getAppliedRules() {
+        return appliedRules;
     }
 
     public void setAppliedRules(Set<ClaimRule> appliedRules) {

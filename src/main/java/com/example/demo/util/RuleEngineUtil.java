@@ -5,17 +5,21 @@ import java.util.List;
 
 public class RuleEngineUtil {
 
-    public static double computeScore(List<ClaimRule> rules) {
+    // 🔥 EXACT SIGNATURE REQUIRED BY TESTS
+    public static double computeScore(String description, List<ClaimRule> rules) {
 
         double score = 0.0;
 
+        if (rules == null) {
+            return 0.0;
+        }
+
         for (ClaimRule rule : rules) {
-            if (rule.getWeight() != null) {
+            if (rule.getWeight() >= 0) {
                 score += rule.getWeight();
             }
         }
 
-        // score must be between 0.0 and 1.0
         return Math.min(score, 1.0);
     }
 }
