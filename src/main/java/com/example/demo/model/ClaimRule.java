@@ -1,9 +1,9 @@
 package com.example.demo.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 
 @Entity
 public class ClaimRule {
@@ -16,23 +16,48 @@ public class ClaimRule {
     private String description;
     private double weight;
 
-    public ClaimRule() {}
+    // ✅ JPA
+    public ClaimRule() {
+    }
 
+    // ✅ REQUIRED BY TEST CASES
     public ClaimRule(String ruleName, String description, double weight) {
         this.ruleName = ruleName;
         this.description = description;
         this.weight = weight;
     }
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    // ✅ GETTERS & SETTERS
 
-    public String getRuleName() { return ruleName; }
-    public void setRuleName(String ruleName) { this.ruleName = ruleName; }
+    public Long getId() {
+        return id;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    public double getWeight() { return weight; }
-    public void setWeight(double weight) { this.weight = weight; }
+    public String getRuleName() {
+        return ruleName;
+    }
+
+    public void setRuleName(String ruleName) {
+        this.ruleName = ruleName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
 }
