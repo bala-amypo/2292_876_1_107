@@ -1,14 +1,16 @@
 package com.example.demo.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-
-import java.util.List;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.PrePersist;
+import java.time.LocalDateTime;
+import java.util.Set;
+import java.util.HashSet;
 
 @Entity
 @Table(name = "damage_claims")
@@ -18,44 +20,47 @@ public class DamageClaim {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String description;
-
-    private String status;
-
     @ManyToOne
     private Parcel parcel;
 
-    @OneToMany(mappedBy = "claim")
-    private List<Evidence> evidences;
+    private String claimDescription;
+    private LocalDateTime filedAt;
+    private String status;
+    private Double score;
+
+    @ManyToMany
+    private Set<ClaimRule> appliedRules = new HashSet<>();
 
     public DamageClaim() {
+        this.status = "PENDING";
+    }
+
+    @PrePersist
+    public void onCreate() {
+        this.filedAt = LocalDateTime.now();
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getDescription() {
-        return description;
+    public String getClaimDescription() {
+        return claimDescription;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setParcel(Parcel parcel) {
+        this.parcel = parcel;
     }
 
-    public String getStatus() {
-        return status;
+    public void setScore(Double score) {
+        this.score = score;
     }
 
     public void setStatus(String status) {
         this.status = status;
     }
 
-    public Parcel getParcel() {
-        return parcel;
-    }
-
-    public void setParcel(Parcel parcel) {
-        this.parcel = parcel;
+    public void setAppliedRules(Set<ClaimRule> appliedRules) {
+        this.appliedRules = appliedRules;
     }
 }

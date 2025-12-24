@@ -1,13 +1,12 @@
 package com.example.demo.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Column;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "parcels")
@@ -20,20 +19,20 @@ public class Parcel {
     @Column(unique = true)
     private String trackingNumber;
 
-    @Column(nullable = false)
+    private String senderName;
+    private String receiverName;
     private Double weightKg;
+    private LocalDateTime deliveredAt;
 
-    private String status;
+    public Parcel() {
+    }
 
-    @ManyToOne
-    @JsonIgnore
-    private User sender;
-
-    @ManyToOne
-    @JsonIgnore
-    private User receiver;
-
-    public Parcel() {}
+    public Parcel(String trackingNumber, String senderName, String receiverName, Double weightKg) {
+        this.trackingNumber = trackingNumber;
+        this.senderName = senderName;
+        this.receiverName = receiverName;
+        this.weightKg = weightKg;
+    }
 
     public Long getId() {
         return id;
@@ -43,39 +42,7 @@ public class Parcel {
         return trackingNumber;
     }
 
-    public void setTrackingNumber(String trackingNumber) {
-        this.trackingNumber = trackingNumber;
-    }
-
     public Double getWeightKg() {
         return weightKg;
-    }
-
-    public void setWeightKg(Double weightKg) {
-        this.weightKg = weightKg;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public User getSender() {
-        return sender;
-    }
-
-    public void setSender(User sender) {
-        this.sender = sender;
-    }
-
-    public User getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(User receiver) {
-        this.receiver = receiver;
     }
 }

@@ -1,12 +1,13 @@
 package com.example.demo.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "evidence")
@@ -16,29 +17,19 @@ public class Evidence {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String fileUrl;
-
     @ManyToOne
-    @JoinColumn(name = "claim_id")
     private DamageClaim claim;
+
+    private String evidenceType;
+    private String fileUrl;
+    private LocalDateTime uploadedAt;
 
     public Evidence() {
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public String getFileUrl() {
-        return fileUrl;
-    }
-
-    public void setFileUrl(String fileUrl) {
-        this.fileUrl = fileUrl;
-    }
-
-    public DamageClaim getClaim() {
-        return claim;
+    @PrePersist
+    public void onUpload() {
+        this.uploadedAt = LocalDateTime.now();
     }
 
     public void setClaim(DamageClaim claim) {
