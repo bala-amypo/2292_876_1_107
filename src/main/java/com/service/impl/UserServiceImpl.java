@@ -19,7 +19,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User register(User user) {
         if (userRepository.existsByEmail(user.getEmail())) {
-            throw new BadRequestException("User already exists");
+            throw new BadRequestException("email exists");
         }
 
         if (user.getRole() == null) {

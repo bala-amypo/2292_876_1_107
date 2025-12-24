@@ -1,12 +1,11 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.exception.BadRequestException;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Parcel;
 import com.example.demo.repository.ParcelRepository;
 import com.example.demo.service.ParcelService;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.UUID;
 
 @Service
 public class ParcelServiceImpl implements ParcelService {
@@ -18,37 +17,21 @@ public class ParcelServiceImpl implements ParcelService {
     }
 
     @Override
-    public Parcel createParcel(Parcel parcel) {
-
-        if (parcel.getWeightKg() == null) {
-            throw new RuntimeException("weightKg is required");
+    public Parcel addParcel(Parcel parcel) {
+        if (parcelRepository.existsByTrackingNumber(parcel.getTrackingNumber())) {
+            throw new BadRequestException("tracking exists");
         }
 
-        if (parcel.getTrackingNumber() == null) {
-            parcel.setTrackingNumber(UUID.randomUUID().toString());
-        }
-
-        if (parcel.getStatus() == null) {
-            parcel.setStatus("CREATED");
+        if (parcel.getWeightKg() <= 0) {
+            throw new BadRequestException("weight invalid");
         }
 
         return parcelRepository.save(parcel);
     }
 
     @Override
-    public List<Parcel> getAllParcels() {
-        return parcelRepository.findAll();
-    }
-
-    @Override
-    public Parcel getParcel(Long id) {
-        return parcelRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Parcel not found"));
-    }
-
-    @Override
     public Parcel getByTrackingNumber(String trackingNumber) {
         return parcelRepository.findByTrackingNumber(trackingNumber)
-                .orElseThrow(() -> new RuntimeException("Parcel not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Parcel not found"));
     }
 }
