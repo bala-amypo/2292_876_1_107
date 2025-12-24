@@ -32,6 +32,25 @@ public class Evidence {
         this.uploadedAt = LocalDateTime.now();
     }
 
+    @Entity
+    public class Evidence {
+
+@Id
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+private Long id;
+
+private String fileName;
+
+private LocalDateTime uploadedAt;
+
+@PrePersist
+public void onCreate() {
+if (uploadedAt == null) {
+uploadedAt = LocalDateTime.now();
+}
+}
+}
+
     public Long getId() {
         return id;
     }

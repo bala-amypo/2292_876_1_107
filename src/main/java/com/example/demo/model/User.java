@@ -10,6 +10,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    
     private Long id;
 
     private String name;
@@ -17,7 +18,6 @@ public class User {
     private String password;
     private String role;
 
-    // ✅ REQUIRED BY JPA
     public User() {
     }
 
