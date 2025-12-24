@@ -5,14 +5,13 @@ import java.util.List;
 
 public class RuleEngineUtil {
 
-    // 🔥 EXACT SIGNATURE REQUIRED BY TESTS
     public static double computeScore(String description, List<ClaimRule> rules) {
 
-        double score = 0.0;
-
-        if (rules == null) {
+        if (description == null || description.isBlank() || rules == null) {
             return 0.0;
         }
+
+        double score = 0.0;
 
         for (ClaimRule rule : rules) {
             score += rule.getWeight();

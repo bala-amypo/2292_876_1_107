@@ -18,25 +18,18 @@ public class Parcel {
     private String receiverName;
     private double weightKg;
 
-    // 🔥 REQUIRED BY TEST CASES
     private LocalDateTime deliveredAt;
 
-    // ✅ JPA constructor
     public Parcel() {
     }
 
-    // ✅ REQUIRED BY TEST CASES
-    public Parcel(String trackingNumber,
-                  String senderName,
-                  String receiverName,
-                  double weightKg) {
+    public Parcel(String trackingNumber, String senderName,
+                  String receiverName, double weightKg) {
         this.trackingNumber = trackingNumber;
         this.senderName = senderName;
         this.receiverName = receiverName;
         this.weightKg = weightKg;
     }
-
-    // ✅ GETTERS & SETTERS
 
     public Long getId() {
         return id;
@@ -78,12 +71,16 @@ public class Parcel {
         this.weightKg = weightKg;
     }
 
-    // 🔥 FIX FOR LAST ERROR
     public LocalDateTime getDeliveredAt() {
         return deliveredAt;
     }
 
     public void setDeliveredAt(LocalDateTime deliveredAt) {
         this.deliveredAt = deliveredAt;
+    }
+
+    // 🔥 REQUIRED BY TESTS
+    public boolean isDelivered() {
+        return deliveredAt != null;
     }
 }
