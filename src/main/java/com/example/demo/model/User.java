@@ -10,7 +10,15 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    
+    @Column(nullable = false)
+    private String role;
+
+    @PrePersist
+    public void setDefaultRole() {
+        if (role == null) {
+                role = "USER";
+                    }
+     }
     private Long id;
 
     private String name;
