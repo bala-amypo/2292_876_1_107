@@ -51,8 +51,7 @@ public class DamageClaimServiceImpl implements DamageClaimService {
         // ✅ FIXED: correct method signature
         double score = RuleEngineUtil.computeScore(
                 claim.getClaimDescription(),
-                rules
-        );
+                rules);
 
         claim.setScore(score);
         claim.setAppliedRules(new HashSet<>(rules));
