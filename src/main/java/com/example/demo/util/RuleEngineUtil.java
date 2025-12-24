@@ -15,9 +15,7 @@ public class RuleEngineUtil {
         }
 
         for (ClaimRule rule : rules) {
-            if (rule.getWeight() >= 0) {
-                score += rule.getWeight();
-            }
+            score += rule.getWeight();
         }
 
         return Math.min(score, 1.0);

@@ -23,7 +23,10 @@ public class User {
     private String password;
     private String role;
 
-    public User() {}
+    public User() {
+    }
+
+    // ===== REQUIRED BY TESTS & SECURITY =====
 
     public Long getId() {
         return id;
@@ -41,11 +44,22 @@ public class User {
         this.email = email;
     }
 
+    // 🔥 MISSING → CAUSED 4 ERRORS
+    public String getPassword() {
+        return password;
+    }
+
+    // 🔥 REQUIRED BY AuthController
     public void setPassword(String password) {
         this.password = password;
     }
 
+    // 🔥 REQUIRED BY UserServiceImpl
     public String getRole() {
         return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
