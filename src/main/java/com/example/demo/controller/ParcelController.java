@@ -2,15 +2,12 @@ package com.example.demo.controller;
 
 import com.example.demo.model.Parcel;
 import com.example.demo.service.ParcelService;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/parcels")
+@RequestMapping("/api/parcels")
 public class ParcelController {
 
     private final ParcelService parcelService;
@@ -20,12 +17,12 @@ public class ParcelController {
     }
 
     @PostMapping
-    public Parcel addParcel(@RequestBody Parcel parcel) {
-        return parcelService.addParcel(parcel);
+    public ResponseEntity<Parcel> addParcel(@RequestBody Parcel parcel) {
+        return new ResponseEntity<>(parcelService.addParcel(parcel), HttpStatus.CREATED);
     }
 
-    @GetMapping("/tracking/{trackingNumber}")
-    public Parcel getParcel(@PathVariable String trackingNumber) {
-        return parcelService.getByTrackingNumber(trackingNumber);
+    @GetMapping("/{trackingNumber}")
+    public ResponseEntity<Parcel> getByTrackingNumber(@PathVariable String trackingNumber) {
+        return ResponseEntity.ok(parcelService.getByTrackingNumber(trackingNumber));
     }
 }

@@ -16,6 +16,7 @@ public class ParcelServiceImpl implements ParcelService {
         this.parcelRepository = parcelRepository;
     }
 
+    // Core logic
     @Override
     public Parcel createParcel(Parcel parcel) {
         if (parcelRepository.existsByTrackingNumber(parcel.getTrackingNumber())) {
@@ -26,10 +27,20 @@ public class ParcelServiceImpl implements ParcelService {
 
     @Override
     public Parcel getParcelByTrackingNumber(String trackingNumber) {
-        return parcelRepository
-                .findByTrackingNumber(trackingNumber)
+        return parcelRepository.findByTrackingNumber(trackingNumber)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Parcel not found with tracking number: " + trackingNumber)
                 );
+    }
+
+    // 🔥 Alias methods for controller/tests
+    @Override
+    public Parcel addParcel(Parcel parcel) {
+        return createParcel(parcel);
+    }
+
+    @Override
+    public Parcel getByTrackingNumber(String trackingNumber) {
+        return getParcelByTrackingNumber(trackingNumber);
     }
 }
