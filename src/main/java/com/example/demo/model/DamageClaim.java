@@ -1,78 +1,90 @@
 package com.example.demo.model;
 
-import jakarta.persistence.*;
-import java.util.HashSet;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Table;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.PrePersist;
+import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.HashSet;
 
 @Entity
+@Table(name = "damage_claims")
 public class DamageClaim {
 
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-// 🔥 REQUIRED BY SERVICE LAYER
-@ManyToOne
-private Parcel parcel;
+    @ManyToOne
+    private Parcel parcel;
 
-private String claimDescription;
+    private String claimDescription;
+    private String status;
+    private double score;
+    private LocalDateTime filedAt;
 
-private Double score; // must be nullable initially
+    @ManyToMany
+    private Set<ClaimRule> appliedRules = new HashSet<>();
 
-private String status = "PENDING";
+    public DamageClaim() {
+        this.status = "PENDING";
+    }
 
-@ManyToMany
-private Set<ClaimRule> appliedRules = new HashSet<>();
+    @PrePersist
+    public void onCreate() {
+        this.filedAt = LocalDateTime.now();
+    }
 
-public DamageClaim() {
-}
+    public Long getId() {
+        return id;
+    }
 
-public Long getId() {
-return id;
-}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-// 🔥 REQUIRED METHODS
-public Parcel getParcel() {
-return parcel;
-}
+    public Parcel getParcel() {
+        return parcel;
+    }
 
-public void setParcel(Parcel parcel) {
-this.parcel = parcel;
-}
+    public void setParcel(Parcel parcel) {
+        this.parcel = parcel;
+    }
 
-public String getClaimDescription() {
-return claimDescription;
-}
+    public String getClaimDescription() {
+        return claimDescription;
+    }
 
-public void setClaimDescription(String claimDescription) {
-this.claimDescription = claimDescription;
-}
+    public void setClaimDescription(String claimDescription) {
+        this.claimDescription = claimDescription;
+    }
 
-public Double getScore() {
-return score;
-}
+    public String getStatus() {
+        return status;
+    }
 
-public void setScore(Double score) {
-this.score = score;
-}
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-public String getStatus() {
-return status;
-}
+    public double getScore() {
+        return score;
+    }
 
-public void setStatus(String status) {
-this.status = status;
-}
+    public void setScore(double score) {
+        this.score = score;
+    }
 
-public Set<ClaimRule> getAppliedRules() {
-return appliedRules;
-}
+    public Set<ClaimRule> getAppliedRules() {
+        return appliedRules;
+    }
 
-public void setId(Long id) {
-    this.id = id;
-}
-
-public void setAppliedRules(Set<ClaimRule> appliedRules) {
-this.appliedRules = appliedRules;
-}
+    public void setAppliedRules(Set<ClaimRule> appliedRules) {
+        this.appliedRules = appliedRules;
+    }
 }
