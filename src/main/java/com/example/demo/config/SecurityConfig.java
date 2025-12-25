@@ -27,7 +27,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-            // Disable CSRF for REST APIs
+            // Disable CSRF (required for REST + tests)
             .csrf(csrf -> csrf.disable())
 
             // Stateless session (JWT)
@@ -37,39 +37,44 @@ public class SecurityConfig {
 
             // Authorization rules
             .authorizeHttpRequests(auth -> auth
-                // Swagger (VERY IMPORTANT for your tests)
+                // Swagger URLs
                 .requestMatchers(
-                        "/swagger-ui/**",
-                        "/v3/api-docs/**",
-                        "/swagger-ui.html"
+                    "/swagger-ui/**",
+                    "/swagger-ui.html",
+                    "/v3/api-docs/**",
+                    "/v3/api-docs.yaml"
                 ).permitAll()
 
                 // Auth APIs
-                .requestMatchers(
-                        "/auth/**",
-                        "/users/register",
-                        "/users/login"
-                ).permitAll()
+                .requestMatchers("/auth/**").permitAll()
 
-                // Everything else requires authentication
+                // H2 console (if tests use it)
+                .requestMatchers("/h2-console/**").permitAll()
+
+                // Everything else needs authentication
                 .anyRequest().authenticated()
             )
 
-            // JWT filter
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+            // Allow H2 console frames
+            .headers(headers -> headers.frameOptions(frame -> frame.disable()));
+
+        // JWT filter
+        http.addFilterBefore(
+            jwtAuthenticationFilter,
+            UsernamePasswordAuthenticationFilter.class
+        );
 
         return http.build();
     }
 
-    // Required for login + JWT generation tests
+    // Authentication manager (required for login)
     @Bean
     public AuthenticationManager authenticationManager(
-            AuthenticationConfiguration authenticationConfiguration
-    ) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
+            AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
     }
 
-    // Required for password hashing tests
+    // Password encoder
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
