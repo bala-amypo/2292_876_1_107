@@ -1,10 +1,7 @@
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import java.time.LocalDateTime;
+import jakarta.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 public class Parcel {
@@ -13,30 +10,26 @@ public class Parcel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String trackingNumber;
     private String senderName;
     private String receiverName;
+    private String trackingNumber;
     private double weightKg;
+    private String status;
 
-    // 🔥 REQUIRED BY TEST CASES
-    private LocalDateTime deliveredAt;
+    private LocalDate shippedDate;
+    private LocalDate deliveredAt;
 
-    // ✅ JPA constructor
     public Parcel() {
     }
 
-    // ✅ REQUIRED BY TEST CASES
-    public Parcel(String trackingNumber,
-            String senderName,
-            String receiverName,
-            double weightKg) {
-        this.trackingNumber = trackingNumber;
+    // ✅ REQUIRED BY TESTS
+    public Parcel(String senderName, String receiverName, String trackingNumber, double weightKg) {
         this.senderName = senderName;
         this.receiverName = receiverName;
+        this.trackingNumber = trackingNumber;
         this.weightKg = weightKg;
+        this.status = "CREATED";
     }
-
-    // ✅ GETTERS & SETTERS
 
     public Long getId() {
         return id;
@@ -44,14 +37,6 @@ public class Parcel {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getTrackingNumber() {
-        return trackingNumber;
-    }
-
-    public void setTrackingNumber(String trackingNumber) {
-        this.trackingNumber = trackingNumber;
     }
 
     public String getSenderName() {
@@ -70,6 +55,14 @@ public class Parcel {
         this.receiverName = receiverName;
     }
 
+    public String getTrackingNumber() {
+        return trackingNumber;
+    }
+
+    public void setTrackingNumber(String trackingNumber) {
+        this.trackingNumber = trackingNumber;
+    }
+
     public double getWeightKg() {
         return weightKg;
     }
@@ -78,12 +71,28 @@ public class Parcel {
         this.weightKg = weightKg;
     }
 
-    // 🔥 FIX FOR LAST ERROR
-    public LocalDateTime getDeliveredAt() {
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public LocalDate getShippedDate() {
+        return shippedDate;
+    }
+
+    public void setShippedDate(LocalDate shippedDate) {
+        this.shippedDate = shippedDate;
+    }
+
+    // ✅ REQUIRED BY TESTS
+    public LocalDate getDeliveredAt() {
         return deliveredAt;
     }
 
-    public void setDeliveredAt(LocalDateTime deliveredAt) {
+    public void setDeliveredAt(LocalDate deliveredAt) {
         this.deliveredAt = deliveredAt;
     }
 }
