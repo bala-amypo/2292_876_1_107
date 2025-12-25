@@ -17,18 +17,15 @@ public class ParcelServiceImpl implements ParcelService {
 
     @Override
     public Parcel addParcel(Parcel parcel) {
-
         if (parcelRepository.existsByTrackingNumber(parcel.getTrackingNumber())) {
             throw new RuntimeException("Parcel already exists");
         }
-
         return parcelRepository.save(parcel);
     }
 
     @Override
     public Parcel getByTrackingNumber(String trackingNumber) {
         return parcelRepository.findByTrackingNumber(trackingNumber)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("parcel not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("parcel not found"));
     }
 }
