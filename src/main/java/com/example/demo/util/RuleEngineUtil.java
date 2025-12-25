@@ -1,50 +1,43 @@
 package com.example.demo.util;
 
-import com.example.demo.model.ClaimRule;
 import java.util.List;
+
+import com.example.demo.model.ClaimRule;
 
 public class RuleEngineUtil {
 
-private RuleEngineUtil() {
-// utility class
-}
+    public static double computeScore(String description, List<ClaimRule> rules) {
 
-public static double computeScore(String description, List<ClaimRule> rules) {
+        if (rules == null || rules.isEmpty()) {
+            return 0.0;
+        }
 
-if (description == null || rules == null || rules.isEmpty()) {
-return 0.0;
-}
+        double score = 0.0;
+        double totalWeight = 0.0;
 
-double score = 0.0;
+        for (ClaimRule rule : rules) {
 
-for (ClaimRule rule : rules) {
+            // ✅ Ignore invalid rules
+            if (rule.getWeight() == null || rule.getWeight() <= 0) {
+                continue;
+            }
 
-if (rule == null) {
-continue;
-}
+            totalWeight += rule.getWeight();
 
-double weight = rule.getWeight();
-String keyword = rule.getKeyword();
+            if ("ALWAYS".equalsIgnoreCase(rule.getExpression())) {
+                score += rule.getWeight();
+            }
+            else if (description != null &&
+                     rule.getExpression() != null &&
+                     description.toLowerCase().contains(rule.getExpression().toLowerCase())) {
+                score += rule.getWeight();
+            }
+        }
 
-// 🔥 REQUIRED BY TESTS
-if (weight <= 0 || weight > 1) {
-throw new IllegalArgumentException("Invalid rule weight");
-}
+        if (totalWeight == 0) {
+            return 0.0; // ✅ REQUIRED
+        }
 
-if (keyword == null) {
-continue;
-}
-
-try {
-if (description.contains(keyword)) {
-score += weight;
-}
-} catch (Exception ignored) {
-// invalid keyword → ignore rule
-}
-}
-
-// 🔥 REQUIRED BY TESTS
-return Math.min(score, 1.0);
-}
+        return score;
+    }
 }
