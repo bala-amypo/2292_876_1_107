@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.Collections;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-@Component   // ✅ THIS IS THE FIX
+@Component // ✅ THIS IS THE FIX
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
@@ -40,14 +40,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String email = parts[1];
             String role = parts[2];
 
-            UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(
-                            email,
-                            null,
-                            Collections.singletonList(
-                                    new SimpleGrantedAuthority("ROLE_" + role)
-                            )
-                    );
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                    email,
+                    null,
+                    Collections.singletonList(
+                            new SimpleGrantedAuthority("ROLE_" + role)));
 
             authentication.setDetails(
                     new WebAuthenticationDetailsSource()
