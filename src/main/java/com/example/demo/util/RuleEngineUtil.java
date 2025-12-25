@@ -1,34 +1,43 @@
-public static double computeScore(String description, List<ClaimRule> rules) {
+package com.example.demo.util;
 
-    if (rules == null || rules.isEmpty()) {
-        return 0.0;
-    }
+import java.util.List;
 
-    double score = 0.0;
-    double totalWeight = 0.0;
+import com.example.demo.model.ClaimRule;
 
-    for (ClaimRule rule : rules) {
+public class RuleEngineUtil {
 
-        // ✅ IGNORE invalid weights
-        if (rule.getWeight() == null || rule.getWeight() <= 0) {
-            continue;
+    public static double computeScore(String description, List<ClaimRule> rules) {
+
+        if (rules == null || rules.isEmpty()) {
+            return 0.0;
         }
 
-        totalWeight += rule.getWeight();
+        double score = 0.0;
+        double totalWeight = 0.0;
 
-        if ("ALWAYS".equalsIgnoreCase(rule.getExpression())) {
-            score += rule.getWeight();
-        } 
-        else if (description != null &&
-                 rule.getExpression() != null &&
-                 description.toLowerCase().contains(rule.getExpression().toLowerCase())) {
-            score += rule.getWeight();
+        for (ClaimRule rule : rules) {
+
+            // ✅ Ignore invalid rules
+            if (rule.getWeight() == null || rule.getWeight() <= 0) {
+                continue;
+            }
+
+            totalWeight += rule.getWeight();
+
+            if ("ALWAYS".equalsIgnoreCase(rule.getExpression())) {
+                score += rule.getWeight();
+            }
+            else if (description != null &&
+                     rule.getExpression() != null &&
+                     description.toLowerCase().contains(rule.getExpression().toLowerCase())) {
+                score += rule.getWeight();
+            }
         }
-    }
 
-    if (totalWeight == 0) {
-        return 0.0;
-    }
+        if (totalWeight == 0) {
+            return 0.0; // ✅ REQUIRED
+        }
 
-    return score;
+        return score;
+    }
 }
