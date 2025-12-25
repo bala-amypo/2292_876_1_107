@@ -1,67 +1,105 @@
+// package com.example.demo.model;
+
+// import jakarta.persistence.*;
+
+// @Entity
+// public class ClaimRule {
+
+//     @Id
+//     @GeneratedValue(strategy = GenerationType.IDENTITY)
+//     private Long id;
+
+//     private String name;
+
+//     private String expression;   // ✅ REQUIRED BY RULE ENGINE
+
+//     private double weight;
+
+//     // ===== Getters & Setters =====
+
+//     public Long getId() {
+//         return id;
+//     }
+
+//     public String getName() {
+//         return name;
+//     }
+
+//     public String getExpression() {
+//         return expression;
+//     }
+
+//     public double getWeight() {
+//         return weight;
+//     }
+
+//     public void setId(Long id) {
+//         this.id = id;
+//     }
+
+//     public void setName(String name) {
+//         this.name = name;
+//     }
+
+//     public void setExpression(String expression) {
+//         this.expression = expression;
+//     }
+
+//     public void setWeight(double weight) {
+//         this.weight = weight;
+//     }
+// }
+
+
+
 package com.example.demo.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
 
 @Entity
 public class ClaimRule {
 
-@Id
-@GeneratedValue(strategy = GenerationType.IDENTITY)
-private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-private String ruleName;
-private String description;
-private double weight;
+    private String name;
 
-// JPA constructor
-public ClaimRule() {
-}
+    private String expression;   // ✅ REQUIRED BY RULE ENGINE
 
-// REQUIRED BY TEST CASES
-public ClaimRule(String ruleName, String description, double weight) {
-this.ruleName = ruleName;
-this.description = description;
-this.weight = weight;
-}
+    private double weight;
 
-// getters & setters
-public Long getId() {
-return id;
-}
+    // ===== Getters & Setters =====
 
-public void setId(Long id) {
-this.id = id;
-}
+    public Long getId() {
+        return id;
+    }
 
-public String getRuleName() {
-return ruleName;
-}
+    public String getName() {
+        return name;
+    }
 
-public void setRuleName(String ruleName) {
-this.ruleName = ruleName;
-}
+    public String getExpression() {
+        return expression;
+    }
 
-public String getDescription() {
-return description;
-}
+    public double getWeight() {
+        return weight;
+    }
 
-public void setDescription(String description) {
-this.description = description;
-}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-// 🔥 REQUIRED BY RuleEngineUtil & Service layer
-public String getKeyword() {
-return description;
-}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-public double getWeight() {
-return weight;
-}
+    public void setExpression(String expression) {
+        this.expression = expression;
+    }
 
-public void setWeight(double weight) {
-this.weight = weight;
-}
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
 }
