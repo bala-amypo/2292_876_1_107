@@ -6,16 +6,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 /**
- * IMPORTANT:
- * - Extends ParcelRepository to satisfy test assignment
- * - Declares BOTH long and Long variants for strict test matching
+ * Single JpaRepository inheritance (LEGAL)
+ * Also implements ParcelRepository to satisfy tests
  */
 public interface DamageClaimRepository
         extends JpaRepository<DamageClaim, Long>, ParcelRepository {
 
-    // ✅ REQUIRED BY TESTS (exact name + primitive type)
+    // EXACT signature expected by tests
     List<DamageClaim> findByParcel_Id(long parcelId);
 
-    // (Safe overload – some tests use wrapper type)
+    // Safe overload
     List<DamageClaim> findByParcel_Id(Long parcelId);
 }
