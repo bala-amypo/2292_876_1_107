@@ -1,8 +1,7 @@
 package com.example.demo.util;
 
-import java.util.List;
-
 import com.example.demo.model.ClaimRule;
+import java.util.List;
 
 public class RuleEngineUtil {
 
@@ -17,25 +16,28 @@ public class RuleEngineUtil {
 
         for (ClaimRule rule : rules) {
 
-            // ✅ Ignore invalid rules
-            if (rule.getWeight() == null || rule.getWeight() <= 0) {
+            // ✅ weight must be > 0
+            if (rule.getWeight() <= 0) {
                 continue;
             }
 
             totalWeight += rule.getWeight();
 
-            if ("ALWAYS".equalsIgnoreCase(rule.getExpression())) {
+            // ✅ ALWAYS rule
+            if ("ALWAYS".equalsIgnoreCase(rule.getRuleName())) {
                 score += rule.getWeight();
             }
+            // ✅ Keyword match
             else if (description != null &&
-                     rule.getExpression() != null &&
-                     description.toLowerCase().contains(rule.getExpression().toLowerCase())) {
+                     rule.getRuleName() != null &&
+                     description.toLowerCase().contains(rule.getRuleName().toLowerCase())) {
                 score += rule.getWeight();
             }
         }
 
+        // ✅ total zero weight handled
         if (totalWeight == 0) {
-            return 0.0; // ✅ REQUIRED
+            return 0.0;
         }
 
         return score;

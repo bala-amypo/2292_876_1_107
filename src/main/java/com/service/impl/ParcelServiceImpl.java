@@ -1,10 +1,9 @@
 package com.example.demo.service.impl;
 
-import org.springframework.stereotype.Service;
-
 import com.example.demo.model.Parcel;
 import com.example.demo.repository.ParcelRepository;
 import com.example.demo.service.ParcelService;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ParcelServiceImpl implements ParcelService {
@@ -19,12 +18,11 @@ public class ParcelServiceImpl implements ParcelService {
     public Parcel addParcel(Parcel parcel) {
 
         if (parcelRepository.existsByTrackingNumber(parcel.getTrackingNumber())) {
-            return null; // ✅ REQUIRED by test
+            return null;
         }
 
-        if (parcel.getSender() == null) {
-            parcel.setSender("Sender"); // ✅ DEFAULT
-        }
+        // ❌ DO NOT use sender (not in entity)
+        // ❌ DO NOT modify trackingNumber
 
         return parcelRepository.save(parcel);
     }
