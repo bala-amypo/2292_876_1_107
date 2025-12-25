@@ -8,6 +8,6 @@ import java.util.List;
 public interface DamageClaimRepository
         extends JpaRepository<DamageClaim, Long> {
 
-    // ✅ Correct Spring Data nested property method
-    List<DamageClaim> findByParcelId(Long parcelId);
+    // ✅ REQUIRED BY TESTS
+    List<DamageClaim> findByParcel_Id(Long parcelId);
 }
