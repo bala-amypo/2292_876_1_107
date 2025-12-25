@@ -1,15 +1,11 @@
 package com.example.demo.repository;
 
 import com.example.demo.model.Parcel;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
 
-/**
- * IMPORTANT:
- * - This is NOT a JpaRepository
- * - Acts as a common parent required by tests
- */
-public interface ParcelRepository {
+public interface ParcelRepository extends JpaRepository<Parcel, Long> {
 
     boolean existsByTrackingNumber(String trackingNumber);
 
