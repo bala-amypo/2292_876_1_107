@@ -96,3 +96,55 @@
 //         this.deliveredAt = deliveredAt;
 //     }
 // }
+
+package com.example.demo.model;
+
+import jakarta.persistence.*;
+
+@Entity
+public class Parcel {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String trackingNumber;
+
+    private String sender;   // ✅ REQUIRED
+
+    private double weight;
+
+    // ===== Getters & Setters =====
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getTrackingNumber() {
+        return trackingNumber;
+    }
+
+    public String getSender() {     // ✅ FIX
+        return sender;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setTrackingNumber(String trackingNumber) {
+        this.trackingNumber = trackingNumber;
+    }
+
+    public void setSender(String sender) {  // ✅ FIX
+        this.sender = sender;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+}
