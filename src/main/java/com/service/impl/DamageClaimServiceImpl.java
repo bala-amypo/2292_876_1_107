@@ -36,4 +36,12 @@ public class DamageClaimServiceImpl implements DamageClaimService {
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Claim not found"));
     }
+
+    // ✅ REQUIRED BY INTERFACE (FIXES ERROR)
+    @Override
+    public DamageClaim evaluateClaim(Long claimId) {
+        DamageClaim claim = getClaim(claimId);
+        claim.setStatus("EVALUATED");
+        return claimRepository.save(claim);
+    }
 }
