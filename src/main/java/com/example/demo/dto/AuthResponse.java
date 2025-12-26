@@ -33,4 +33,3 @@ public class AuthResponse {
         return role;
     }
 }
-
