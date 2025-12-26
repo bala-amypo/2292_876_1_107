@@ -60,6 +60,7 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    // ✅ REGISTER
     @Override
     public User register(User user) {
 
@@ -67,10 +68,9 @@ public class UserServiceImpl implements UserService {
             throw new BadRequestException("Email already exists");
         }
 
-        // ✅ encode password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-        // ✅ default role
+        // ✅ Default role (important for tests)
         if (user.getRole() == null || user.getRole().isBlank()) {
             user.setRole("AGENT");
         }
@@ -78,10 +78,24 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    // ✅ FIND BY EMAIL
     @Override
     public User findByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() ->
                         new ResourceNotFoundException("User not found"));
+    }
+
+    // ✅ LOGIN VALIDATION
+    @Override
+    public User validateLogin(String email, String password) {
+
+        User user = findByEmail(email);
+
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new BadRequestException("Invalid credentials");
+        }
+
+        return user;
     }
 }

@@ -19,4 +19,6 @@ public interface UserService {
     User register(User user);
 
     User findByEmail(String email);
+
+    User validateLogin(String email, String password);
 }

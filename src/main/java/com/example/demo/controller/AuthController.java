@@ -48,11 +48,13 @@
 // }
 
 
-
 package com.example.demo.controller;
 
+import com.example.demo.dto.AuthRequest;
+import com.example.demo.dto.AuthResponse;
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
+import com.example.demo.util.JwtUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -66,15 +68,39 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final UserService userService;
+    private final JwtUtil jwtUtil;
 
-    public AuthController(UserService userService) {
+    public AuthController(UserService userService, JwtUtil jwtUtil) {
         this.userService = userService;
+        this.jwtUtil = jwtUtil;
     }
 
-    // ✅ MUST BE permitAll
+    // ✅ REGISTER
     @PostMapping("/register")
     @PreAuthorize("permitAll()")
     public ResponseEntity<User> register(@RequestBody User user) {
-        return new ResponseEntity<>(userService.register(user), HttpStatus.CREATED);
+        User savedUser = userService.register(user);
+        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+    }
+
+    // ✅ LOGIN
+    @PostMapping("/login")
+    @PreAuthorize("permitAll()")
+    public ResponseEntity<AuthResponse> login(
+            @RequestBody AuthRequest request) {
+
+        User user = userService.validateLogin(
+                request.getEmail(),
+                request.getPassword()
+        );
+
+        String token = jwtUtil.generateToken(
+                user.getEmail(),
+                user.getRole()
+        );
+
+        return ResponseEntity.ok(
+                new AuthResponse(token, user.getRole())
+        );
     }
 }
