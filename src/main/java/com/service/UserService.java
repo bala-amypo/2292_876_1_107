@@ -34,6 +34,5 @@ public interface UserService {
 
     User getUserById(Long id);
 
-    // 🔧 FIX: return User, not boolean
     User validateLogin(String username, String password);
 }

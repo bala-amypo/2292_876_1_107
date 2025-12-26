@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    // Constructor for tests
+    // constructor for tests
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = null;
@@ -125,7 +125,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id).orElse(null);
     }
 
-    // 🔧 FIX: return User
     @Override
     public User validateLogin(String username, String password) {
 
@@ -144,6 +143,8 @@ public class UserServiceImpl implements UserService {
             return user.getPassword().equals(password) ? user : null;
         }
 
-        return passwordEncoder.matches(password, user.getPassword()) ? user : null;
+        return passwordEncoder.matches(password, user.getPassword())
+                ? user
+                : null;
     }
 }
