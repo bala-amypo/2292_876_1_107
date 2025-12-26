@@ -93,11 +93,9 @@ public class User {
     private String password;
     private String role;
 
-    // ✅ REQUIRED: Default constructor
     public User() {
     }
 
-    // ✅ REQUIRED: Constructor used by tests
     public User(String username, String email, String password, String role) {
         this.username = username;
         this.email = email;
@@ -106,13 +104,16 @@ public class User {
         this.name = username;
     }
 
-    // ===== Getters & Setters =====
-
     public Long getId() {
         return id;
     }
 
-    public String getName() {   // ✅ REQUIRED by tests
+    // ✅ REQUIRED BY TESTS
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
         return name;
     }
 
