@@ -71,3 +71,4 @@ public class DamageClaimServiceImpl implements DamageClaimService {
                 .orElseThrow(() -> new ResourceNotFoundException("claim not found"));
     }
 }
+
