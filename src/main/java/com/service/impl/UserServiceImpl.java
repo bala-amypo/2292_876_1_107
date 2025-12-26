@@ -101,13 +101,11 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    // for tests
+    // Constructor for tests
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = null;
     }
-
-    // ================= Interface methods =================
 
     @Override
     public User registerUser(User user) {
@@ -127,23 +125,25 @@ public class UserServiceImpl implements UserService {
         return userRepository.findById(id).orElse(null);
     }
 
+    // 🔧 FIX: return User
     @Override
-    public boolean validateLogin(String username, String password) {
+    public User validateLogin(String username, String password) {
+
         Optional<User> optionalUser = userRepository.findAll()
                 .stream()
                 .filter(u -> u.getUsername().equals(username))
                 .findFirst();
 
         if (optionalUser.isEmpty()) {
-            return false;
+            return null;
         }
 
         User user = optionalUser.get();
 
         if (passwordEncoder == null) {
-            return user.getPassword().equals(password);
+            return user.getPassword().equals(password) ? user : null;
         }
 
-        return passwordEncoder.matches(password, user.getPassword());
+        return passwordEncoder.matches(password, user.getPassword()) ? user : null;
     }
 }

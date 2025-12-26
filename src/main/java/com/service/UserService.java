@@ -28,13 +28,12 @@ import com.example.demo.model.User;
 
 public interface UserService {
 
-    // already existing
     User registerUser(User user);
+
+    User register(User user);
 
     User getUserById(Long id);
 
-    // ✅ ADD THESE (required by AuthController)
-    User register(User user);
-
-    boolean validateLogin(String username, String password);
+    // 🔧 FIX: return User, not boolean
+    User validateLogin(String username, String password);
 }
