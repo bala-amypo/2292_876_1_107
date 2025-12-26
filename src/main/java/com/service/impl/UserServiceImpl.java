@@ -102,12 +102,14 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    // 🔴 ERROR LINE ~49 WAS HERE
     @Override
     public User register(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
+    // 🔴 ERROR LINE ~68, 76 WERE HERE
     @Override
     public User validateLogin(String username, String password) {
         Optional<User> optionalUser = userRepository.findByUsername(username);
