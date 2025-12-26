@@ -83,6 +83,7 @@ package com.example.demo.service.impl;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -93,7 +94,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    // Spring constructor
     @Autowired
     public UserServiceImpl(UserRepository userRepository,
                            PasswordEncoder passwordEncoder) {
@@ -101,12 +101,12 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    // Test constructor
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = null;
     }
 
+    // ✅ declared in interface → KEEP @Override
     @Override
     public User registerUser(User user) {
         if (passwordEncoder != null) {
@@ -115,8 +115,19 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    // ✅ declared in interface → KEEP @Override
     @Override
     public User getUserById(Long id) {
         return userRepository.findById(id).orElse(null);
+    }
+
+    // ❌ NOT in interface → REMOVE @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    // ❌ NOT in interface → REMOVE @Override
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
     }
 }
