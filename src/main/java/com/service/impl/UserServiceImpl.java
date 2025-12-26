@@ -83,10 +83,10 @@ package com.example.demo.service.impl;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
-import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -94,57 +94,30 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository,
-                           PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder
+    ) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
-    // for TestNG tests
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = null;
-    }
-
     @Override
-    public User registerUser(User user) {
-        if (passwordEncoder != null) {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-        }
+    public User register(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
     @Override
-    public User register(User user) {
-        return registerUser(user);
-    }
-
-    @Override
-    public User getUserById(Long id) {
-        return userRepository.findById(id).orElse(null);
-    }
-
-    @Override
     public User validateLogin(String username, String password) {
+        Optional<User> optionalUser = userRepository.findByUsername(username);
 
-        Optional<User> optionalUser = userRepository.findAll()
-                .stream()
-                .filter(u -> u.getUsername().equals(username))
-                .findFirst();
-
-        if (optionalUser.isEmpty()) {
-            return null;
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            if (passwordEncoder.matches(password, user.getPassword())) {
+                return user;
+            }
         }
-
-        User user = optionalUser.get();
-
-        if (passwordEncoder == null) {
-            return user.getPassword().equals(password) ? user : null;
-        }
-
-        return passwordEncoder.matches(password, user.getPassword())
-                ? user
-                : null;
+        return null;
     }
 }
