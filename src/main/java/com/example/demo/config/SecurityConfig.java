@@ -52,7 +52,6 @@
 //     }
 // }
 
-
 package com.example.demo.config;
 
 import org.springframework.context.annotation.Bean;
@@ -70,40 +69,40 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
-    // ✅ Main security filter chain
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-            // Disable CSRF for APIs & tests
             .csrf(csrf -> csrf.disable())
 
-            // Stateless (important for tests & JWT)
             .sessionManagement(session ->
-                    session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-            // Allow Swagger & public endpoints
             .authorizeHttpRequests(auth -> auth
-                    .requestMatchers(
-                            "/swagger-ui/**",
-                            "/v3/api-docs/**",
-                            "/swagger-ui.html",
-                            "/auth/**",
-                            "/error"
-                    ).permitAll()
-                    .anyRequest().authenticated()
+                .requestMatchers(
+                    "/auth/**",
+                    "/swagger-ui/**",
+                    "/v3/api-docs/**",
+                    "/swagger-ui.html",
+                    "/error"
+                ).permitAll()
+                .anyRequest().authenticated()
+            )
+
+            // needed for Swagger iframe
+            .headers(headers ->
+                headers.frameOptions(frame -> frame.disable())
             );
 
         return http.build();
     }
 
-    // ✅ Password encoder (FIXES your last runtime error)
+    // ✅ fixes PasswordEncoder missing bean error
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // ✅ Authentication manager (needed for login / JWT / tests)
     @Bean
     public AuthenticationManager authenticationManager(
             AuthenticationConfiguration configuration) throws Exception {
