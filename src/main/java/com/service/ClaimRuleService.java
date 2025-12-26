@@ -9,3 +9,4 @@ public interface ClaimRuleService {
 
     List<ClaimRule> getAllRules();
 }
+
