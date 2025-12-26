@@ -10,4 +10,3 @@ public interface DamageClaimService {
 
     DamageClaim getClaim(Long claimId);
 }
-

@@ -15,4 +15,3 @@ public class JwtUtil {
         return new String(Base64.getDecoder().decode(token));
     }
 }
-

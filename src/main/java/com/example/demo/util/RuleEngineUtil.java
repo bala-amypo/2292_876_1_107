@@ -21,4 +21,3 @@ public class RuleEngineUtil {
         return Math.min(score, 1.0);
     }
 }
-
