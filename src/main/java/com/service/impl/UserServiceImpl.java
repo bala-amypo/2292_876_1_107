@@ -81,7 +81,6 @@
 
 
 
-
 package com.example.demo.service.impl;
 
 import com.example.demo.exception.BadRequestException;
@@ -106,7 +105,6 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    // REGISTER
     @Override
     public User register(User user) {
 
@@ -123,7 +121,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
-    // FIND BY EMAIL
     @Override
     public User findByEmail(String email) {
         return userRepository.findByEmail(email)
@@ -131,7 +128,7 @@ public class UserServiceImpl implements UserService {
                         new ResourceNotFoundException("User not found"));
     }
 
-    // LOGIN VALIDATION (FIXED)
+    // ✅ THIS NOW MATCHES THE INTERFACE EXACTLY
     @Override
     public User validateLogin(String email, String password) {
 
