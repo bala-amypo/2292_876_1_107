@@ -30,7 +30,6 @@ public class DamageClaimServiceImpl implements DamageClaimService {
         this.ruleRepository = ruleRepository;
     }
 
-
     @Override
     public DamageClaim fileClaim(Long parcelId, DamageClaim claim) {
 
@@ -72,4 +71,3 @@ public class DamageClaimServiceImpl implements DamageClaimService {
                 .orElseThrow(() -> new ResourceNotFoundException("claim not found"));
     }
 }
-
