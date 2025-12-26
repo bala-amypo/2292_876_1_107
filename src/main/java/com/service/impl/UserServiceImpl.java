@@ -101,7 +101,7 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    // constructor for tests
+    // for TestNG tests
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = null;
