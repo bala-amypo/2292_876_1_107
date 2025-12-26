@@ -83,7 +83,7 @@ package com.example.demo.service.impl;
 import com.example.demo.model.User;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.service.UserService;
-import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -101,12 +101,14 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    // for tests
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = null;
     }
 
-    // ✅ declared in interface → KEEP @Override
+    // ================= Interface methods =================
+
     @Override
     public User registerUser(User user) {
         if (passwordEncoder != null) {
@@ -115,19 +117,33 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
-    // ✅ declared in interface → KEEP @Override
+    @Override
+    public User register(User user) {
+        return registerUser(user);
+    }
+
     @Override
     public User getUserById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
 
-    // ❌ NOT in interface → REMOVE @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
+    @Override
+    public boolean validateLogin(String username, String password) {
+        Optional<User> optionalUser = userRepository.findAll()
+                .stream()
+                .filter(u -> u.getUsername().equals(username))
+                .findFirst();
 
-    // ❌ NOT in interface → REMOVE @Override
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+        if (optionalUser.isEmpty()) {
+            return false;
+        }
+
+        User user = optionalUser.get();
+
+        if (passwordEncoder == null) {
+            return user.getPassword().equals(password);
+        }
+
+        return passwordEncoder.matches(password, user.getPassword());
     }
 }
