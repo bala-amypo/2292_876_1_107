@@ -10,15 +10,25 @@
 // }
 
 
+// package com.example.demo.service;
+
+// import com.example.demo.model.User;
+
+// public interface UserService {
+
+//     User register(User user);
+
+//     User findByEmail(String email);
+
+//     User validateLogin(String email, String password);
+// }
 package com.example.demo.service;
 
 import com.example.demo.model.User;
 
 public interface UserService {
 
-    User register(User user);
+    User registerUser(User user);
 
-    User findByEmail(String email);
-
-    User validateLogin(String email, String password);
+    User getUserById(Long id);
 }
