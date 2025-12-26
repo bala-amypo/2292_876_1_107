@@ -1,96 +1,74 @@
-// package com.example.demo.service.impl;
+package com.example.demo.service.impl;
 
-// import com.example.demo.exception.ResourceNotFoundException;
-// import com.example.demo.model.ClaimRule;
-// import com.example.demo.model.DamageClaim;
-// import com.example.demo.model.Parcel;
-// import com.example.demo.repository.ClaimRuleRepository;
-// import com.example.demo.repository.DamageClaimRepository;
-// import com.example.demo.repository.ParcelRepository;
-// import com.example.demo.service.DamageClaimService;
-// import com.example.demo.util.RuleEngineUtil;
-// import org.springframework.stereotype.Service;
-// import java.util.HashSet;
-// import java.util.List;
+import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.model.ClaimRule;
+import com.example.demo.model.DamageClaim;
+import com.example.demo.model.Parcel;
+import com.example.demo.repository.ClaimRuleRepository;
+import com.example.demo.repository.DamageClaimRepository;
+import com.example.demo.repository.ParcelRepository;
+import com.example.demo.service.DamageClaimService;
+import com.example.demo.util.RuleEngineUtil;
+import org.springframework.stereotype.Service;
+import java.util.HashSet;
+import java.util.List;
 
-// @Service
-// public class DamageClaimServiceImpl implements DamageClaimService {
+@Service
+public class DamageClaimServiceImpl implements DamageClaimService {
 
-//     private final ParcelRepository parcelRepository;
-//     private final DamageClaimRepository claimRepository;
-//     private final ClaimRuleRepository ruleRepository;
+    private final ParcelRepository parcelRepository;
+    private final DamageClaimRepository claimRepository;
+    private final ClaimRuleRepository ruleRepository;
 
-//     public DamageClaimServiceImpl(
-//             ParcelRepository parcelRepository,
-//             DamageClaimRepository claimRepository,
-//             ClaimRuleRepository ruleRepository) {
+    public DamageClaimServiceImpl(
+            ParcelRepository parcelRepository,
+            DamageClaimRepository claimRepository,
+            ClaimRuleRepository ruleRepository) {
 
-//         this.parcelRepository = parcelRepository;
-//         this.claimRepository = claimRepository;
-//         this.ruleRepository = ruleRepository;
-//     }
-
-//     @Override
-//     public DamageClaim fileClaim(Long parcelId, DamageClaim claim) {
-
-//         Parcel parcel = parcelRepository.findById(parcelId)
-//                 .orElseThrow(() -> new ResourceNotFoundException("parcel not found"));
-
-//         claim.setParcel(parcel);
-//         return claimRepository.save(claim);
-//     }
-
-//     @Override
-//     public DamageClaim evaluateClaim(Long claimId) {
-
-//         DamageClaim claim = claimRepository.findById(claimId)
-//                 .orElseThrow(() -> new ResourceNotFoundException("claim not found"));
-
-//         List<ClaimRule> rules = ruleRepository.findAll();
-
-//         // ✅ FIXED: correct method signature
-//         double score = RuleEngineUtil.computeScore(
-//                 claim.getClaimDescription(),
-//                 rules);
-
-//         claim.setScore(score);
-//         claim.setAppliedRules(new HashSet<>(rules));
-
-//         if (score > 0.9) {
-//             claim.setStatus("APPROVED");
-//         } else if (score == 0.0) {
-//             claim.setStatus("REJECTED");
-//         }
-
-//         return claimRepository.save(claim);
-//     }
-
-//     @Override
-//     public DamageClaim getClaim(Long claimId) {
-//         return claimRepository.findById(claimId)
-//                 .orElseThrow(() -> new ResourceNotFoundException("claim not found"));
-//     }
-// }
-
-@Override
-public DamageClaim evaluateClaim(Long claimId) {
-
-    DamageClaim claim = claimRepository.findById(claimId)
-            .orElseThrow(() -> new RuntimeException("Claim not found"));
-
-    double score = RuleEngineUtil.computeScore(
-            claim.getDescription(),
-            ruleRepository.findAll()
-    );
-
-    claim.setScore(score);
-
-    // ✅ Correct status logic
-    if (score > 0) {
-        claim.setStatus("APPROVED");
-    } else {
-        claim.setStatus("REJECTED");
+        this.parcelRepository = parcelRepository;
+        this.claimRepository = claimRepository;
+        this.ruleRepository = ruleRepository;
     }
 
-    return claimRepository.save(claim);
+    @Override
+    public DamageClaim fileClaim(Long parcelId, DamageClaim claim) {
+
+        Parcel parcel = parcelRepository.findById(parcelId)
+                .orElseThrow(() -> new ResourceNotFoundException("parcel not found"));
+
+        claim.setParcel(parcel);
+        return claimRepository.save(claim);
+    }
+
+    @Override
+    public DamageClaim evaluateClaim(Long claimId) {
+
+        DamageClaim claim = claimRepository.findById(claimId)
+                .orElseThrow(() -> new ResourceNotFoundException("claim not found"));
+
+        List<ClaimRule> rules = ruleRepository.findAll();
+
+        // ✅ FIXED: correct method signature
+        double score = RuleEngineUtil.computeScore(
+                claim.getClaimDescription(),
+                rules);
+
+        claim.setScore(score);
+        claim.setAppliedRules(new HashSet<>(rules));
+
+        if (score > 0.9) {
+            claim.setStatus("APPROVED");
+        } else if (score == 0.0) {
+            claim.setStatus("REJECTED");
+        }
+
+        return claimRepository.save(claim);
+    }
+
+    @Override
+    public DamageClaim getClaim(Long claimId) {
+        return claimRepository.findById(claimId)
+                .orElseThrow(() -> new ResourceNotFoundException("claim not found"));
+    }
 }
+
