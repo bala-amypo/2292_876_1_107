@@ -21,7 +21,9 @@ public class Parcel {
     
     private LocalDateTime deliveredAt;
     
-    public Parcel() {}
+    public Parcel() {
+        
+    }
     
     public Parcel(String trackingNumber, String senderName, String receiverName, Double weightKg) {
         this.trackingNumber = trackingNumber;
